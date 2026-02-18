@@ -33,3 +33,15 @@ text = "00"
 label_settings = SubResource("LabelSettings_1l05u")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=837450840]
+visible = false
+self_modulate = Color(1, 1, 1, 0.3019608)
+top_level = true
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 37.0
+offset_bottom = 67.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

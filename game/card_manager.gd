@@ -8,15 +8,11 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
-
-func test():
-	print("Holy Shit!")
 	
 func populate_card(card_arrays: Array):
 	for array_index in card_arrays.size():
 		for n_index in card_arrays[array_index].size():
 			var n_node = self.find_child("N%s" % str(array_index*9+n_index+1), true)
-			print(n_node)
 			n_node.set_number(card_arrays[array_index][n_index])
 			pass
 	pass

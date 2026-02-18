@@ -15,3 +15,7 @@ func set_number(n: int):
 		$PanelContainer/Label.text = ""
 	else:
 		$PanelContainer/Label.text = str(n)
+
+
+func _on_button_pressed() -> void:
+	print("Boop")
