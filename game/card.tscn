@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://rol43l0bif1d"]
 
+[ext_resource type="PackedScene" uid="uid://dnenntgqm0w7c" path="res://game/number_box.tscn" id="1_0w4ig"]
+[ext_resource type="Script" uid="uid://c0gxsgies560o" path="res://game/card_manager.gd" id="1_xq66r"]
+
 [node name="Card" type="Control" unique_id=735171781]
+custom_minimum_size = Vector2(400, 230)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -9,11 +13,102 @@ offset_right = -880.0
 offset_bottom = -490.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_xq66r")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1764822985]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 392.0
+grow_vertical = 2
+alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=672007599]
+layout_mode = 2
+
+[node name="N1" parent="VBoxContainer/HBoxContainer" unique_id=891308843 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N2" parent="VBoxContainer/HBoxContainer" unique_id=2023276238 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N3" parent="VBoxContainer/HBoxContainer" unique_id=399536326 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N4" parent="VBoxContainer/HBoxContainer" unique_id=1534023108 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N5" parent="VBoxContainer/HBoxContainer" unique_id=241129373 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N6" parent="VBoxContainer/HBoxContainer" unique_id=409339081 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N7" parent="VBoxContainer/HBoxContainer" unique_id=85220242 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N8" parent="VBoxContainer/HBoxContainer" unique_id=946392781 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N9" parent="VBoxContainer/HBoxContainer" unique_id=972474624 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" unique_id=514935843]
+layout_mode = 2
+
+[node name="N10" parent="VBoxContainer/HBoxContainer2" unique_id=190664894 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N11" parent="VBoxContainer/HBoxContainer2" unique_id=701876562 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N12" parent="VBoxContainer/HBoxContainer2" unique_id=687488100 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N13" parent="VBoxContainer/HBoxContainer2" unique_id=102458997 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N14" parent="VBoxContainer/HBoxContainer2" unique_id=546776926 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N15" parent="VBoxContainer/HBoxContainer2" unique_id=1506139301 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N16" parent="VBoxContainer/HBoxContainer2" unique_id=722759615 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N17" parent="VBoxContainer/HBoxContainer2" unique_id=912911012 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N18" parent="VBoxContainer/HBoxContainer2" unique_id=606835415 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" unique_id=1385991425]
+layout_mode = 2
+
+[node name="N19" parent="VBoxContainer/HBoxContainer3" unique_id=1713055410 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N20" parent="VBoxContainer/HBoxContainer3" unique_id=1749889679 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N21" parent="VBoxContainer/HBoxContainer3" unique_id=1070435228 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N22" parent="VBoxContainer/HBoxContainer3" unique_id=1191854554 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N23" parent="VBoxContainer/HBoxContainer3" unique_id=251613767 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N24" parent="VBoxContainer/HBoxContainer3" unique_id=972570952 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N25" parent="VBoxContainer/HBoxContainer3" unique_id=1176815124 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N26" parent="VBoxContainer/HBoxContainer3" unique_id=726752942 instance=ExtResource("1_0w4ig")]
+layout_mode = 2
+
+[node name="N27" parent="VBoxContainer/HBoxContainer3" unique_id=1512506726 instance=ExtResource("1_0w4ig")]
 layout_mode = 2

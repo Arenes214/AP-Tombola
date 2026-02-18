@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://dnenntgqm0w7c"]
 
+[ext_resource type="Script" uid="uid://ic7cgnf1qomb" path="res://game/number_manager.gd" id="1_1l05u"]
 [ext_resource type="StyleBox" uid="uid://e1dlqss5q234" path="res://game/styles/number_box_default.tres" id="1_c8u22"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1l05u"]
@@ -8,12 +9,16 @@ outline_size = 5
 outline_color = Color(0, 0, 0, 1)
 
 [node name="NumberBox" type="Control" unique_id=891308843]
+custom_minimum_size = Vector2(40, 70)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -1240.0
+offset_bottom = -650.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_1l05u")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1161252617]
 layout_mode = 0

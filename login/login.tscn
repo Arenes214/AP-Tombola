@@ -10,7 +10,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Manager" type="Node" parent="." unique_id=1369086299]
+[node name="LoginManager" type="Node" parent="." unique_id=1369086299]
 script = ExtResource("1_t3q6d")
 
 [node name="LoginBox" type="VBoxContainer" parent="." unique_id=933807387]
@@ -30,11 +30,12 @@ grow_vertical = 2
 
 [node name="NameField" type="LineEdit" parent="LoginBox" unique_id=992255177]
 layout_mode = 2
+text = "Player1"
 placeholder_text = "Slot Name"
 
 [node name="IPField" type="LineEdit" parent="LoginBox" unique_id=1564336284]
 layout_mode = 2
-text = "archipelago.gg"
+text = "localhost"
 placeholder_text = "IP Address"
 
 [node name="PortField" type="LineEdit" parent="LoginBox" unique_id=1099176001]
@@ -58,4 +59,4 @@ custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Connect"
 
-[connection signal="pressed" from="LoginBox/Center/ConnectButton" to="Manager" method="_on_connect_button_pressed"]
+[connection signal="pressed" from="LoginBox/Center/ConnectButton" to="LoginManager" method="_on_connect_button_pressed"]

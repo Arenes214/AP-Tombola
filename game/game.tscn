@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://bqpyuyrhqi10n"]
 
+[ext_resource type="PackedScene" uid="uid://rol43l0bif1d" path="res://game/card.tscn" id="1_l1rk1"]
+[ext_resource type="Script" uid="uid://0cw75584ivoe" path="res://game/game_manager.gd" id="1_vasa2"]
+
 [node name="Game" type="Control" unique_id=660172829]
 layout_mode = 3
 anchors_preset = 15
@@ -7,3 +10,38 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_vasa2")
+
+[node name="CardContainer" type="HBoxContainer" parent="." unique_id=830407513]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_right = 814.0
+grow_vertical = 2
+
+[node name="V1" type="VBoxContainer" parent="CardContainer" unique_id=1482038006]
+layout_mode = 2
+alignment = 1
+
+[node name="Card 1" parent="CardContainer/V1" unique_id=735171781 instance=ExtResource("1_l1rk1")]
+layout_mode = 2
+
+[node name="Card 2" parent="CardContainer/V1" unique_id=2080908741 instance=ExtResource("1_l1rk1")]
+layout_mode = 2
+
+[node name="Card 3" parent="CardContainer/V1" unique_id=753835254 instance=ExtResource("1_l1rk1")]
+layout_mode = 2
+
+[node name="V2" type="VBoxContainer" parent="CardContainer" unique_id=306923304]
+layout_mode = 2
+alignment = 1
+
+[node name="Card 4" parent="CardContainer/V2" unique_id=1999106796 instance=ExtResource("1_l1rk1")]
+layout_mode = 2
+
+[node name="Card 5" parent="CardContainer/V2" unique_id=460634737 instance=ExtResource("1_l1rk1")]
+layout_mode = 2
+
+[node name="Card 6" parent="CardContainer/V2" unique_id=1642805007 instance=ExtResource("1_l1rk1")]
+layout_mode = 2
