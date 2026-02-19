@@ -22,5 +22,4 @@ func _on_connected(conn: ConnectionInfo, json: Dictionary):
 	GameOptions.automark = $"../LoginBox/AutoClickButton".button_pressed
 	var scene = game_scene.instantiate()
 	get_tree().root.add_child(scene)
-	
 	%LoginBox.hide()

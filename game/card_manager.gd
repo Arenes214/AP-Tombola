@@ -10,10 +10,12 @@ func _process(delta: float) -> void:
 	pass
 
 signal possible_location_send(card_id: int, score_type: int)
+signal possible_unlock_loc_send(card_id: int)
 
 var card_id: int = 0
 var own_card: Array
 var is_locked: bool = false
+var has_scored_tombola: bool = false
 
 func lock():
 	is_locked = true
@@ -21,7 +23,7 @@ func lock():
 	$LockPanel.visible =  true
 
 func allow_unlock():
-	# TODO Change text of button
+	$LockPanel/UnlockButton.text = "Unlock!"
 	$LockPanel/UnlockButton.disabled = false
 
 func populate_card(card_arrays: Array, card_iden: int):
@@ -76,6 +78,7 @@ func on_number_pressed(n: int, row_id: int):
 		
 		if count == 15:
 			possible_location_send.emit(card_id, 7)
+			has_scored_tombola = true
 			pass
 	
 
@@ -85,3 +88,4 @@ func _on_unlock_button_pressed() -> void:
 	is_locked = false
 	if not is_locked and GameOptions.automark:
 		automark_numbers()
+	possible_unlock_loc_send.emit(card_id)

@@ -3,6 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://rol43l0bif1d" path="res://game/card.tscn" id="1_l1rk1"]
 [ext_resource type="Script" uid="uid://0cw75584ivoe" path="res://game/game_manager.gd" id="1_vasa2"]
 [ext_resource type="StyleBox" uid="uid://e1dlqss5q234" path="res://game/styles/number_box_default.tres" id="3_h7iqs"]
+[ext_resource type="Script" uid="uid://ouwa4nm2rwol" path="res://game/chat/chat_screen.gd" id="4_4fuuu"]
+[ext_resource type="Script" uid="uid://bh62kj53ogtxp" path="res://game/chat_input.gd" id="5_dxrkv"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4fuuu"]
 font_size = 24
@@ -55,11 +57,12 @@ layout_mode = 2
 [node name="OtherContainer" type="VSplitContainer" parent="CardContainer" unique_id=243292946]
 layout_mode = 2
 size_flags_horizontal = 3
-split_offsets = PackedInt32Array(150)
-split_offset = 150
+split_offsets = PackedInt32Array(100)
+split_offset = 100
 
 [node name="MilestoneContainer" type="VBoxContainer" parent="CardContainer/OtherContainer" unique_id=251390045]
 layout_mode = 2
+alignment = 1
 
 [node name="GoalContainer" type="PanelContainer" parent="CardContainer/OtherContainer/MilestoneContainer" unique_id=683963604]
 layout_mode = 2
@@ -68,11 +71,50 @@ theme_override_styles/panel = ExtResource("3_h7iqs")
 [node name="Label" type="Label" parent="CardContainer/OtherContainer/MilestoneContainer/GoalContainer" unique_id=978044522]
 layout_mode = 2
 size_flags_vertical = 1
-text = "TODO GOAL"
 label_settings = SubResource("LabelSettings_4fuuu")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Button" type="Button" parent="CardContainer/OtherContainer/MilestoneContainer/GoalContainer" unique_id=732875486]
+visible = false
+self_modulate = Color(1, 1, 1, 0.23529412)
+layout_mode = 2
+disabled = true
+
 [node name="ChatBox" type="PanelContainer" parent="CardContainer/OtherContainer" unique_id=1824183420]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
+
+[node name="VChat" type="VBoxContainer" parent="CardContainer/OtherContainer/ChatBox" unique_id=1731645379]
+layout_mode = 2
+
+[node name="ChatScreen" type="RichTextLabel" parent="CardContainer/OtherContainer/ChatBox/VChat" unique_id=1663768414]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+bbcode_enabled = true
+scroll_following = true
+selection_enabled = true
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+script = ExtResource("4_4fuuu")
+
+[node name="HChat" type="HBoxContainer" parent="CardContainer/OtherContainer/ChatBox/VChat" unique_id=2099583265]
+layout_mode = 2
+
+[node name="ChatInput" type="LineEdit" parent="CardContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1024832137]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("5_dxrkv")
+
+[node name="ChatSend" type="Button" parent="CardContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1139993462]
+layout_mode = 2
+text = "SEND"
+
+[node name="Timer" type="Timer" parent="." unique_id=1964231862]
+autostart = true
+
+[connection signal="pressed" from="CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="text_submitted" from="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" to="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_text_submitted"]
+[connection signal="pressed" from="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatSend" to="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_chat_send_pressed"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
