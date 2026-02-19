@@ -8,6 +8,10 @@
 
 config_version=5
 
+[animation]
+
+compatibility/stretch/mode="canvas_items"
+
 [application]
 
 config/name="AP Tombola"
@@ -18,6 +22,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Archipelago="*uid://c0ovofocoscyg"
+GameOptions="*uid://jcqnpmee1dqn"
 
 [display]
 

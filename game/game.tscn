@@ -2,6 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://rol43l0bif1d" path="res://game/card.tscn" id="1_l1rk1"]
 [ext_resource type="Script" uid="uid://0cw75584ivoe" path="res://game/game_manager.gd" id="1_vasa2"]
+[ext_resource type="StyleBox" uid="uid://e1dlqss5q234" path="res://game/styles/number_box_default.tres" id="3_h7iqs"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4fuuu"]
+font_size = 24
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Game" type="Control" unique_id=660172829]
 layout_mode = 3
@@ -17,7 +23,7 @@ layout_mode = 1
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 10.0
-offset_right = 814.0
+offset_right = 1270.0
 grow_vertical = 2
 
 [node name="V1" type="VBoxContainer" parent="CardContainer" unique_id=1482038006]
@@ -44,4 +50,29 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Card 6" parent="CardContainer/V2" unique_id=1642805007 instance=ExtResource("1_l1rk1")]
+layout_mode = 2
+
+[node name="OtherContainer" type="VSplitContainer" parent="CardContainer" unique_id=243292946]
+layout_mode = 2
+size_flags_horizontal = 3
+split_offsets = PackedInt32Array(150)
+split_offset = 150
+
+[node name="MilestoneContainer" type="VBoxContainer" parent="CardContainer/OtherContainer" unique_id=251390045]
+layout_mode = 2
+
+[node name="GoalContainer" type="PanelContainer" parent="CardContainer/OtherContainer/MilestoneContainer" unique_id=683963604]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_h7iqs")
+
+[node name="Label" type="Label" parent="CardContainer/OtherContainer/MilestoneContainer/GoalContainer" unique_id=978044522]
+layout_mode = 2
+size_flags_vertical = 1
+text = "TODO GOAL"
+label_settings = SubResource("LabelSettings_4fuuu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ChatBox" type="PanelContainer" parent="CardContainer/OtherContainer" unique_id=1824183420]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
