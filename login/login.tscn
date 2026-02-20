@@ -2,6 +2,12 @@
 
 [ext_resource type="Script" uid="uid://chv6oqm4hklw4" path="res://login/manager.gd" id="1_t3q6d"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3q6d"]
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
+
+[sub_resource type="Theme" id="Theme_by2ci"]
+Panel/styles/panel = SubResource("StyleBoxFlat_t3q6d")
+
 [node name="Login" type="Control" unique_id=327356672]
 layout_mode = 3
 anchors_preset = 15
@@ -9,6 +15,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_by2ci")
+
+[node name="Panel" type="Panel" parent="." unique_id=885048554]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="LoginManager" type="Node" parent="." unique_id=1369086299]
 script = ExtResource("1_t3q6d")
@@ -30,12 +43,11 @@ grow_vertical = 2
 
 [node name="NameField" type="LineEdit" parent="LoginBox" unique_id=992255177]
 layout_mode = 2
-text = "Player1"
 placeholder_text = "Slot Name"
 
 [node name="IPField" type="LineEdit" parent="LoginBox" unique_id=1564336284]
 layout_mode = 2
-text = "localhost"
+text = "archipelago.gg"
 placeholder_text = "IP Address"
 
 [node name="PortField" type="LineEdit" parent="LoginBox" unique_id=1099176001]

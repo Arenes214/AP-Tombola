@@ -6,6 +6,12 @@
 [ext_resource type="Script" uid="uid://ouwa4nm2rwol" path="res://game/chat/chat_screen.gd" id="4_4fuuu"]
 [ext_resource type="Script" uid="uid://bh62kj53ogtxp" path="res://game/chat_input.gd" id="5_dxrkv"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxrkv"]
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
+
+[sub_resource type="Theme" id="Theme_dxrkv"]
+Panel/styles/panel = SubResource("StyleBoxFlat_dxrkv")
+
 [sub_resource type="LabelSettings" id="LabelSettings_4fuuu"]
 font_size = 24
 outline_size = 5
@@ -19,6 +25,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vasa2")
+
+[node name="Background" type="Panel" parent="." unique_id=128774375]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = SubResource("Theme_dxrkv")
 
 [node name="CardContainer" type="HBoxContainer" parent="." unique_id=830407513]
 layout_mode = 1
@@ -105,16 +118,17 @@ layout_mode = 2
 [node name="ChatInput" type="LineEdit" parent="CardContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1024832137]
 layout_mode = 2
 size_flags_horizontal = 3
+keep_editing_on_text_submit = true
 script = ExtResource("5_dxrkv")
 
 [node name="ChatSend" type="Button" parent="CardContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1139993462]
 layout_mode = 2
 text = "SEND"
 
-[node name="Timer" type="Timer" parent="." unique_id=1964231862]
+[node name="TombolaCheckTimer" type="Timer" parent="." unique_id=1964231862]
 autostart = true
 
 [connection signal="pressed" from="CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="text_submitted" from="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" to="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_text_submitted"]
 [connection signal="pressed" from="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatSend" to="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_chat_send_pressed"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="TombolaCheckTimer" to="." method="_on_tombola_timer_timeout"]
