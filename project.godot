@@ -17,7 +17,10 @@ compatibility/stretch/mode="canvas_items"
 config/name="AP Tombola"
 run/main_scene="uid://dsaa86o8uiu01"
 config/features=PackedStringArray("4.6", "Mobile")
+boot_splash/use_filter=false
+boot_splash/image="uid://c6stfhf60ubi5"
 config/icon="res://icon.svg"
+boot_splash/minimum_display_time=750
 
 [autoload]
 
