@@ -1,11 +1,17 @@
 [gd_scene format=3 uid="uid://dsaa86o8uiu01"]
 
+[ext_resource type="StyleBox" uid="uid://bcf282gwt1lbo" path="res://login/lineedit_focus.tres" id="1_5otam"]
 [ext_resource type="Script" uid="uid://chv6oqm4hklw4" path="res://login/manager.gd" id="1_t3q6d"]
+[ext_resource type="StyleBox" uid="uid://ddhw3olsqb12g" path="res://login/lineedit_default.tres" id="2_2ykpf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3q6d"]
 bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
 
 [sub_resource type="Theme" id="Theme_by2ci"]
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/font_sizes/font_size = 20
+LineEdit/styles/focus = ExtResource("1_5otam")
+LineEdit/styles/normal = ExtResource("2_2ykpf")
 Panel/styles/panel = SubResource("StyleBoxFlat_t3q6d")
 
 [node name="Login" type="Control" unique_id=327356672]

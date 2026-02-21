@@ -26,7 +26,7 @@ func _on_message_received(json: Dictionary, plain: String):
 				to_print = _parse_itemsend_message(json)
 	
 	if to_print == "":
-		to_print = plain + "\n"# Failsafe Handle
+		to_print = "[color=a3a3a3ff]%s[/color]" % plain + "\n"# Failsafe Handle
 	append_text(to_print)
 
 func _parse_chat_message(player_slot: int, message: String) -> String:

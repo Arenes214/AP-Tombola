@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://rol43l0bif1d" path="res://game/card.tscn" id="1_l1rk1"]
 [ext_resource type="Script" uid="uid://0cw75584ivoe" path="res://game/game_manager.gd" id="1_vasa2"]
-[ext_resource type="StyleBox" uid="uid://e1dlqss5q234" path="res://game/styles/number_box_default.tres" id="3_h7iqs"]
+[ext_resource type="StyleBox" uid="uid://ddhw3olsqb12g" path="res://login/lineedit_default.tres" id="3_dxrkv"]
 [ext_resource type="Script" uid="uid://ouwa4nm2rwol" path="res://game/chat/chat_screen.gd" id="4_4fuuu"]
 [ext_resource type="Script" uid="uid://bh62kj53ogtxp" path="res://game/chat_input.gd" id="5_dxrkv"]
 
@@ -79,7 +79,7 @@ alignment = 1
 
 [node name="GoalContainer" type="PanelContainer" parent="CardContainer/OtherContainer/MilestoneContainer" unique_id=683963604]
 layout_mode = 2
-theme_override_styles/panel = ExtResource("3_h7iqs")
+theme_override_styles/panel = ExtResource("3_dxrkv")
 
 [node name="Label" type="Label" parent="CardContainer/OtherContainer/MilestoneContainer/GoalContainer" unique_id=978044522]
 layout_mode = 2
