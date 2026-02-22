@@ -19,7 +19,7 @@ run/main_scene="uid://dsaa86o8uiu01"
 config/features=PackedStringArray("4.6", "Mobile")
 boot_splash/use_filter=false
 boot_splash/image="uid://c6stfhf60ubi5"
-config/icon="res://icon.svg"
+config/icon="uid://c6stfhf60ubi5"
 boot_splash/minimum_display_time=750
 
 [autoload]

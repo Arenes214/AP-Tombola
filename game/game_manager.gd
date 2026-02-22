@@ -17,10 +17,11 @@ func _ready() -> void:
 		card_node.populate_card(Archipelago.conn.slot_data["Cards"][i-1], i-1)
 		card_node.possible_location_send.connect(_on_possible_location)
 		card_node.possible_unlock_loc_send.connect(_on_possible_unlock)
-		
-		if Archipelago.conn.slot_data["Cards Locked"].find(float(i)) != -1:
-			card_node.lock()
-			pass
+
+		if (Archipelago.conn.slot_data.has("Cards Locked")):
+			if Archipelago.conn.slot_data["Cards Locked"].find(float(i)) != -1:
+				card_node.lock()
+				pass
 	
 	# Connect to various AP signals
 	Archipelago.conn.obtained_item.connect(_on_item_received)
