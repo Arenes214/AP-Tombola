@@ -85,10 +85,10 @@ func manage_goal():
 		$CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Label.text = "Tombola Requirement Reached!"
 		$CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Button.visible = true
 		$CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Button.disabled = false
-		if (GameOptions.automark):
-			_on_button_pressed()
 	else:
 		$CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Label.text = "Need %s more Tombola" % (score_requirement - count)
+		$CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Button.visible = false
+		$CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Button.disabled = true
 
 
 
@@ -98,6 +98,7 @@ func card_id_to_node(n: int) -> Node:
 
 
 func _on_button_pressed() -> void:
+	print("Victory is firing!")
 	Archipelago.set_client_status(Archipelago.ClientStatus.CLIENT_GOAL)
 
 
