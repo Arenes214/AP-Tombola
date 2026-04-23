@@ -1,5 +1,5 @@
 extends Control
-
+signal login_from_save(slot_name: String, ip: String, port: String, password: String)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -17,3 +17,7 @@ func load_info(info: Dictionary):
 	$VBox/Port.text = info["port"]
 	$VBox/Password.text = info["password"]
 	
+	
+
+func _on_load_button_pressed() -> void:
+	login_from_save.emit($VBox/SlotName.text, $VBox/IP.text, $VBox/Port.text, $VBox/Password.text)

@@ -36,6 +36,7 @@ func restore_saves():
 		
 		var save_node = load("res://login/saveslot.tscn").instantiate()
 		save_node.load_info(node_data)
+		save_node.login_from_save.connect(_connect_from_save)
 		%SaveBox.add_child(save_node)
 	
 	
@@ -74,3 +75,6 @@ func _on_connected(conn: ConnectionInfo, json: Dictionary):
 
 func connect_to_ap():
 	Archipelago.ap_connect(%LoginBox/IPField.text, %LoginBox/PortField.text, %LoginBox/NameField.text, %LoginBox/PasswordField.text)
+
+func _connect_from_save(slot_name: String, ip: String, port: String, password: String):
+	Archipelago.ap_connect(ip, port, slot_name, password)
