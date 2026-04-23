@@ -3,7 +3,6 @@
 [ext_resource type="StyleBox" uid="uid://bcf282gwt1lbo" path="res://login/lineedit_focus.tres" id="1_5otam"]
 [ext_resource type="Script" uid="uid://chv6oqm4hklw4" path="res://login/manager.gd" id="1_t3q6d"]
 [ext_resource type="StyleBox" uid="uid://ddhw3olsqb12g" path="res://login/lineedit_default.tres" id="2_2ykpf"]
-[ext_resource type="PackedScene" uid="uid://b0lqkwog5gt0p" path="res://login/saveslot.tscn" id="4_2ykpf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3q6d"]
 bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
@@ -96,9 +95,6 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 grow_horizontal = 0
-
-[node name="Saveslot" parent="SaveBox" unique_id=1641629920 instance=ExtResource("4_2ykpf")]
-layout_mode = 2
 
 [connection signal="pressed" from="LoginBox/ConnectButton" to="LoginManager" method="_on_connect_button_pressed"]
 [connection signal="pressed" from="LoginBox/SaveConnectButton" to="LoginManager" method="_on_save_connect_button_pressed"]

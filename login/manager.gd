@@ -37,6 +37,7 @@ func restore_saves():
 		var save_node = load("res://login/saveslot.tscn").instantiate()
 		save_node.load_info(node_data)
 		save_node.login_from_save.connect(_connect_from_save)
+		save_node.delete_save_request.connect(_delete_save)
 		%SaveBox.add_child(save_node)
 	
 	
@@ -47,7 +48,6 @@ func _on_connect_button_pressed() -> void: # Connect without saving
 func _on_save_connect_button_pressed() -> void: # Save and then Connect
 	# TODO Save
 	# TODO save to a new slot, for now it just overrides the first save
-	var save_file = FileAccess.open("user://saveslot1.tmblasave", FileAccess.WRITE)
 	
 	var save_info = {
 		"save_name" = %LoginBox/SaveField.text,
@@ -57,11 +57,7 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
 		"password" = %LoginBox/PasswordField.text
 	}
 	all_save_slots[all_save_slots.size()+1] = save_info
-	
-	for slot in all_save_slots.values():
-			var json_string = JSON.stringify(slot)
-			save_file.store_line(json_string)
-
+	_write_saves()
 	
 	connect_to_ap()
 
@@ -78,3 +74,20 @@ func connect_to_ap():
 
 func _connect_from_save(slot_name: String, ip: String, port: String, password: String):
 	Archipelago.ap_connect(ip, port, slot_name, password)
+
+func _delete_save(save_name: String):
+	for slot_i in all_save_slots:
+		var slot = all_save_slots[slot_i]
+		if slot["save_name"] == save_name:
+			all_save_slots.erase(slot_i)
+			_write_saves()
+			for node in %SaveBox.get_children():
+				if node.save_name == save_name:
+					node.queue_free()
+
+func _write_saves():
+		var save_file = FileAccess.open("user://saveslot1.tmblasave", FileAccess.WRITE)
+		
+		for slot in all_save_slots.values():
+			var json_string = JSON.stringify(slot)
+			save_file.store_line(json_string)
