@@ -4,14 +4,35 @@ var game_scene = preload("res://game/game.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Archipelago.connected.connect(_on_connected)
+	
 	# TODO Call the function that will display the saves
+	restore_saves()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
-
-
+func restore_saves():
+	if not FileAccess.file_exists("user://saveslot1.tmblasave"):
+		return # No Save
+	
+	var save_file = FileAccess.open("user://saveslot1.tmblasave", FileAccess.READ)
+	
+	var json_string = save_file.get_line()
+	var json = JSON.new()
+	
+	var parse_result = json.parse(json_string)
+	if not parse_result == OK:
+		print("Error parsing Save JSON: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+	
+	var node_data = json.data
+	
+	var save_node = load("res://login/saveslot.tscn").instantiate()
+	print(node_data)
+	save_node.load_info(node_data)
+	%SaveBox.add_child(save_node)
+	
+	
 
 func _on_connect_button_pressed() -> void: # Connect without saving
 	connect_to_ap()

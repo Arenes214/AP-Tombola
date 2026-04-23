@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://bsptahch6xh6l" path="res://login/saveslot.gd" id="1_ksxyh"]
 
 [node name="Saveslot" type="Control" unique_id=1641629920]
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
