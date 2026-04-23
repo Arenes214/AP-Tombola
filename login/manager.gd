@@ -1,6 +1,8 @@
 extends Node
 
 var game_scene = preload("res://game/game.tscn")
+
+var all_save_slots = {}
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Archipelago.connected.connect(_on_connected)
@@ -18,19 +20,23 @@ func restore_saves():
 	
 	var save_file = FileAccess.open("user://saveslot1.tmblasave", FileAccess.READ)
 	
-	var json_string = save_file.get_line()
-	var json = JSON.new()
-	
-	var parse_result = json.parse(json_string)
-	if not parse_result == OK:
-		print("Error parsing Save JSON: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
-	
-	var node_data = json.data
-	
-	var save_node = load("res://login/saveslot.tscn").instantiate()
-	print(node_data)
-	save_node.load_info(node_data)
-	%SaveBox.add_child(save_node)
+	var i = 0
+	while save_file.get_position() < save_file.get_length():
+		var json_string = save_file.get_line()
+		var json = JSON.new()
+		
+		var parse_result = json.parse(json_string)
+		if not parse_result == OK:
+			print("Error parsing Save JSON: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+			return
+		
+		var node_data = json.data
+		all_save_slots[i] = node_data
+		i += 1
+		
+		var save_node = load("res://login/saveslot.tscn").instantiate()
+		save_node.load_info(node_data)
+		%SaveBox.add_child(save_node)
 	
 	
 
@@ -49,10 +55,12 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
 		"port" = %LoginBox/PortField.text,
 		"password" = %LoginBox/PasswordField.text
 	}
+	all_save_slots[all_save_slots.size()+1] = save_info
 	
-	var json_string = JSON.stringify(save_info)
-	
-	save_file.store_line(json_string)
+	for slot in all_save_slots.values():
+			var json_string = JSON.stringify(slot)
+			save_file.store_line(json_string)
+
 	
 	connect_to_ap()
 

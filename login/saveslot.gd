@@ -10,16 +10,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func save():
-	var save_dict = {
-		"savename" = $VBox/SaveName.text,
-		"slotname" = $VBox/SlotName.text,
-		"ip" = $VBox/IP.text,
-		"port" = $VBox/Port.text,
-		"password" = $VBox/Password.text
-	}
-	return save_dict
-
 func load_info(info: Dictionary):
 	$VBox/SaveName.text = info["save_name"]
 	$VBox/SlotName.text = info["slot_name"]
