@@ -7,6 +7,7 @@ var slot_name: String
 var ip: String
 var port: String
 var password: String
+var ip_hidden: bool
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,22 +19,19 @@ func _process(delta: float) -> void:
 	pass
 
 func load_info(info: Dictionary):
-	%VBox/SaveName.text = info["save_name"]
 	save_name = info["save_name"]
-	
-	%VBox/SlotName.text = info["slot_name"]
 	slot_name = info["slot_name"]
-	
-	%VBox/IP.text = info["ip"]
 	ip = info["ip"]
-	
-	%VBox/Port.text = info["port"]
 	port = info["port"]
-	
-	%VBox/Password.text = info["password"]
 	password = info["password"]
+	ip_hidden = info["ip_hidden"]
 	
-	
+	%VBox/SaveName.text = save_name
+	%VBox/SlotName.text = slot_name
+	if not ip_hidden:
+		%VBox/Address.text = "%s:%s" % [ip, port]
+	else:
+		%VBox/Address.text = "IP Hidden"
 
 func _on_load_button_pressed() -> void:
 	login_from_save.emit(slot_name, ip, port, password)

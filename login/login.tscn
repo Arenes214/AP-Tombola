@@ -69,6 +69,10 @@ secret = true
 layout_mode = 2
 text = "Automatic Number Clicking"
 
+[node name="IpHideButton" type="CheckButton" parent="LoginBox" unique_id=1312239452]
+layout_mode = 2
+text = "Do not Display IP Address in Saved Slots"
+
 [node name="ConnectButton" type="Button" parent="LoginBox" unique_id=1161150009]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -80,21 +84,27 @@ layout_mode = 2
 
 [node name="SaveField" type="LineEdit" parent="LoginBox" unique_id=408610786]
 layout_mode = 2
-placeholder_text = "SaveFile Name"
+placeholder_text = "Save Name"
 
 [node name="SaveConnectButton" type="Button" parent="LoginBox" unique_id=25530505]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Save Info to New Slot and Connect"
+text = "Save Slot Info and Connect"
 
-[node name="SaveBox" type="VBoxContainer" parent="." unique_id=1623309098]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1843666619]
+custom_minimum_size = Vector2(200, 720)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
 grow_horizontal = 0
+
+[node name="SaveBox" type="VBoxContainer" parent="ScrollContainer" unique_id=1623309098]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
 
 [connection signal="pressed" from="LoginBox/ConnectButton" to="LoginManager" method="_on_connect_button_pressed"]
 [connection signal="pressed" from="LoginBox/SaveConnectButton" to="LoginManager" method="_on_save_connect_button_pressed"]

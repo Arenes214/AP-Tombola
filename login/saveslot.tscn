@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://bsptahch6xh6l" path="res://login/saveslot.gd" id="1_ksxyh"]
 [ext_resource type="Theme" uid="uid://cybeaoyrjd58j" path="res://login/slot_theme.tres" id="2_ox4pm"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_ox4pm"]
+font_size = 20
+
 [node name="Saveslot" type="Control" unique_id=1641629920]
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 3
@@ -37,29 +40,22 @@ layout_mode = 2
 [node name="SaveName" type="Label" parent="C/VBox" unique_id=2032799124]
 layout_mode = 2
 text = "Save Name"
+label_settings = SubResource("LabelSettings_ox4pm")
 
 [node name="SlotName" type="Label" parent="C/VBox" unique_id=727030413]
 layout_mode = 2
 text = "Slot Name"
 
-[node name="IP" type="Label" parent="C/VBox" unique_id=1842725030]
+[node name="Address" type="Label" parent="C/VBox" unique_id=1842725030]
 layout_mode = 2
 text = "IP"
-
-[node name="Port" type="Label" parent="C/VBox" unique_id=519875175]
-layout_mode = 2
-text = "Port"
-
-[node name="Password" type="Label" parent="C/VBox" unique_id=2070841020]
-layout_mode = 2
-text = "Password"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="C/VBox" unique_id=2030353342]
 layout_mode = 2
 
 [node name="LoadButton" type="Button" parent="C/VBox/HBoxContainer" unique_id=1442048745]
 layout_mode = 2
-text = "Load"
+text = "Connect"
 
 [node name="DeleteButton" type="Button" parent="C/VBox/HBoxContainer" unique_id=1083100701]
 layout_mode = 2
