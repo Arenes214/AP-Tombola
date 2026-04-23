@@ -3,6 +3,7 @@
 [ext_resource type="StyleBox" uid="uid://bcf282gwt1lbo" path="res://login/lineedit_focus.tres" id="1_5otam"]
 [ext_resource type="Script" uid="uid://chv6oqm4hklw4" path="res://login/manager.gd" id="1_t3q6d"]
 [ext_resource type="StyleBox" uid="uid://ddhw3olsqb12g" path="res://login/lineedit_default.tres" id="2_2ykpf"]
+[ext_resource type="PackedScene" uid="uid://b0lqkwog5gt0p" path="res://login/saveslot.tscn" id="4_2ykpf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3q6d"]
 bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
@@ -69,12 +70,35 @@ secret = true
 layout_mode = 2
 text = "Automatic Number Clicking"
 
-[node name="Center" type="CenterContainer" parent="LoginBox" unique_id=443740068]
-layout_mode = 2
-
-[node name="ConnectButton" type="Button" parent="LoginBox/Center" unique_id=1161150009]
+[node name="ConnectButton" type="Button" parent="LoginBox" unique_id=1161150009]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
-text = "Connect"
+text = "Connect Without Saving Slot Info"
 
-[connection signal="pressed" from="LoginBox/Center/ConnectButton" to="LoginManager" method="_on_connect_button_pressed"]
+[node name="MarginContainer" type="MarginContainer" parent="LoginBox" unique_id=1466005068]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="SaveField" type="LineEdit" parent="LoginBox" unique_id=408610786]
+layout_mode = 2
+placeholder_text = "SaveFile Name"
+
+[node name="SaveConnectButton" type="Button" parent="LoginBox" unique_id=25530505]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Save Info to New Slot and Connect"
+
+[node name="SaveBox" type="VBoxContainer" parent="." unique_id=1623309098]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+
+[node name="Saveslot" parent="SaveBox" unique_id=1641629920 instance=ExtResource("4_2ykpf")]
+layout_mode = 2
+
+[connection signal="pressed" from="LoginBox/ConnectButton" to="LoginManager" method="_on_connect_button_pressed"]
+[connection signal="pressed" from="LoginBox/SaveConnectButton" to="LoginManager" method="_on_save_connect_button_pressed"]

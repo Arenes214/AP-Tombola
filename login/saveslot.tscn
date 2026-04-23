@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://b0lqkwog5gt0p"]
+
+[ext_resource type="Script" uid="uid://bsptahch6xh6l" path="res://login/saveslot.gd" id="1_ksxyh"]
+
+[node name="Saveslot" type="Control" unique_id=1641629920]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ksxyh")
+
+[node name="VBox" type="VBoxContainer" parent="." unique_id=1003175845]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SaveName" type="Label" parent="VBox" unique_id=2032799124]
+layout_mode = 2
+text = "Save Name"
+
+[node name="SlotName" type="Label" parent="VBox" unique_id=727030413]
+layout_mode = 2
+text = "Slot Name"
+
+[node name="IP" type="Label" parent="VBox" unique_id=1842725030]
+layout_mode = 2
+text = "IP"
+
+[node name="Port" type="Label" parent="VBox" unique_id=519875175]
+layout_mode = 2
+text = "Port"
+
+[node name="Password" type="Label" parent="VBox" unique_id=2070841020]
+layout_mode = 2
+text = "Password"
+
+[node name="LoadButton" type="Button" parent="VBox" unique_id=1442048745]
+layout_mode = 2
+text = "Load"
