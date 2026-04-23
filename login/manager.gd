@@ -44,8 +44,6 @@ func _on_connect_button_pressed() -> void: # Connect without saving
 	connect_to_ap()
 
 func _on_save_connect_button_pressed() -> void: # Save and then Connect
-	# TODO Save
-	# TODO save to a new slot, for now it just overrides the first save
 	
 	var save_info = {
 		"save_name" = %LoginBox/SaveField.text,
