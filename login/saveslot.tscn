@@ -1,54 +1,69 @@
 [gd_scene format=3 uid="uid://b0lqkwog5gt0p"]
 
 [ext_resource type="Script" uid="uid://bsptahch6xh6l" path="res://login/saveslot.gd" id="1_ksxyh"]
+[ext_resource type="Theme" uid="uid://cybeaoyrjd58j" path="res://login/slot_theme.tres" id="2_ox4pm"]
 
 [node name="Saveslot" type="Control" unique_id=1641629920]
-custom_minimum_size = Vector2(0, 200)
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1280.0
+offset_right = -1080.0
 offset_bottom = -520.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ksxyh")
 
-[node name="VBox" type="VBoxContainer" parent="." unique_id=1003175845]
+[node name="Panel" type="Panel" parent="." unique_id=983823965]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme = ExtResource("2_ox4pm")
 
-[node name="SaveName" type="Label" parent="VBox" unique_id=2032799124]
+[node name="C" type="CenterContainer" parent="." unique_id=1968202820]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="VBox" type="VBoxContainer" parent="C" unique_id=1003175845]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="SaveName" type="Label" parent="C/VBox" unique_id=2032799124]
 layout_mode = 2
 text = "Save Name"
 
-[node name="SlotName" type="Label" parent="VBox" unique_id=727030413]
+[node name="SlotName" type="Label" parent="C/VBox" unique_id=727030413]
 layout_mode = 2
 text = "Slot Name"
 
-[node name="IP" type="Label" parent="VBox" unique_id=1842725030]
+[node name="IP" type="Label" parent="C/VBox" unique_id=1842725030]
 layout_mode = 2
 text = "IP"
 
-[node name="Port" type="Label" parent="VBox" unique_id=519875175]
+[node name="Port" type="Label" parent="C/VBox" unique_id=519875175]
 layout_mode = 2
 text = "Port"
 
-[node name="Password" type="Label" parent="VBox" unique_id=2070841020]
+[node name="Password" type="Label" parent="C/VBox" unique_id=2070841020]
 layout_mode = 2
 text = "Password"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBox" unique_id=2030353342]
+[node name="HBoxContainer" type="HBoxContainer" parent="C/VBox" unique_id=2030353342]
 layout_mode = 2
 
-[node name="LoadButton" type="Button" parent="VBox/HBoxContainer" unique_id=1442048745]
+[node name="LoadButton" type="Button" parent="C/VBox/HBoxContainer" unique_id=1442048745]
 layout_mode = 2
 text = "Load"
 
-[node name="DeleteButton" type="Button" parent="VBox/HBoxContainer" unique_id=1083100701]
+[node name="DeleteButton" type="Button" parent="C/VBox/HBoxContainer" unique_id=1083100701]
 layout_mode = 2
 text = "Delete"
 
-[connection signal="pressed" from="VBox/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
-[connection signal="pressed" from="VBox/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="C/VBox/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
+[connection signal="pressed" from="C/VBox/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
