@@ -9,8 +9,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-signal possible_location_send(card_id: int, score_type: int)
+signal possible_regular_location_send(card_id: int, score_type: int)
 signal possible_unlock_loc_send(card_id: int)
+signal possible_rowsanity_location_send(card_id: int, score_type: int, row_id: int, decina_row: int)
+
+signal number_was_marked(n: int, special: int)
 
 var card_id: int = 0
 var own_card: Array
@@ -39,14 +42,29 @@ func populate_card(card_arrays: Array, card_iden: int):
 func mark_number(n: int, row_id: int, col_id: int, mark_type: int):
 	var n_node = self.find_child("N%s" % str(row_id*9+col_id+1), true)
 	n_node.mark(mark_type)
-	
+
+func set_all_numbers_status(only_numbers: bool, status_type: int):
+	for hbox in $VBoxContainer.get_children():
+		for node in hbox.get_children():
+			if only_numbers:
+				if not node.n == 0:
+					node.mark(status_type)
+			else:
+				node.mark(status_type)
+
+func restore_status():
+	for hbox in $VBoxContainer.get_children():
+		for node in hbox.get_children():
+			node.restore_mark()
+
+
 func automark_numbers():
 	for hbox in $VBoxContainer.get_children():
 		for node in hbox.get_children():
 			if not node.n == 0 and node.is_markable:
 				node.auto_press()
 
-func on_number_pressed(n: int, row_id: int):
+func on_number_pressed(n: int, row_id: int, special:int):
 	var count = 0
 	for i in range(9):
 		var n_node = self.find_child("N%s" % str(row_id*9+i+1), true)
@@ -54,7 +72,8 @@ func on_number_pressed(n: int, row_id: int):
 			count += 1
 			
 			if count >= 2:
-				possible_location_send.emit(card_id, count)
+				possible_regular_location_send.emit(card_id, count)
+				possible_rowsanity_location_send.emit(card_id, count, row_id, 4)
 				
 				pass
 	# Check Decina and Tombola
@@ -73,14 +92,16 @@ func on_number_pressed(n: int, row_id: int):
 					else:
 						break
 				if count == 10:
-					possible_location_send.emit(card_id, 6)
+					possible_regular_location_send.emit(card_id, 6)
+					possible_rowsanity_location_send.emit(card_id, 6, row_id, other_row_id)
 					pass
 		
 		if count == 15:
-			possible_location_send.emit(card_id, 7)
+			possible_regular_location_send.emit(card_id, 7)
 			has_scored_tombola = true
 			pass
 	
+	number_was_marked.emit(n, special)
 
 func _on_unlock_button_pressed() -> void:
 	$LockPanel.visible = false

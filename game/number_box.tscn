@@ -4,18 +4,19 @@
 [ext_resource type="StyleBox" uid="uid://e1dlqss5q234" path="res://game/styles/number_box_default.tres" id="1_c8u22"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_1l05u"]
-font_size = 24
+font_size = 25
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
+shadow_size = 0
 
 [node name="NumberBox" type="Control" unique_id=891308843]
-custom_minimum_size = Vector2(40, 70)
+custom_minimum_size = Vector2(39, 68)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1240.0
-offset_bottom = -650.0
+offset_right = -1241.0
+offset_bottom = -652.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1l05u")
@@ -42,4 +43,13 @@ layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
 
+[node name="FakeButton" type="Button" parent="PanelContainer/Label" unique_id=1818884672]
+visible = false
+self_modulate = Color(1, 1, 1, 0.23529412)
+custom_minimum_size = Vector2(34, 64)
+layout_mode = 0
+offset_right = 34.0
+offset_bottom = 64.0
+
 [connection signal="pressed" from="PanelContainer/Label/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="PanelContainer/Label/FakeButton" to="." method="_on_fake_button_pressed"]

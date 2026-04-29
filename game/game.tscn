@@ -3,14 +3,21 @@
 [ext_resource type="PackedScene" uid="uid://rol43l0bif1d" path="res://game/card.tscn" id="1_l1rk1"]
 [ext_resource type="Script" uid="uid://0cw75584ivoe" path="res://game/game_manager.gd" id="1_vasa2"]
 [ext_resource type="StyleBox" uid="uid://ddhw3olsqb12g" path="res://login/lineedit_default.tres" id="3_dxrkv"]
+[ext_resource type="Script" uid="uid://cr3n7po1s086k" path="res://game/goal_manager.gd" id="3_u5opy"]
 [ext_resource type="Script" uid="uid://ouwa4nm2rwol" path="res://game/chat/chat_screen.gd" id="4_4fuuu"]
+[ext_resource type="PackedScene" uid="uid://djqqlpxc0sd3d" path="res://game/goal_box.tscn" id="4_y36n6"]
 [ext_resource type="Script" uid="uid://bh62kj53ogtxp" path="res://game/chat_input.gd" id="5_dxrkv"]
+[ext_resource type="Script" uid="uid://dpxtmw5wblej7" path="res://game/trap_manager.gd" id="6_j8tme"]
+[ext_resource type="Script" uid="uid://cl78ikyy8tncl" path="res://game/free_mark_manager.gd" id="6_y36n6"]
+[ext_resource type="Script" uid="uid://cwueq54i7kuqr" path="res://game/free_loc_hints_manager.gd" id="7_l8g03"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dxrkv"]
 bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
 
 [sub_resource type="Theme" id="Theme_dxrkv"]
 Panel/styles/panel = SubResource("StyleBoxFlat_dxrkv")
+
+[sub_resource type="Theme" id="Theme_dakft"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4fuuu"]
 font_size = 24
@@ -33,75 +40,180 @@ offset_right = 40.0
 offset_bottom = 40.0
 theme = SubResource("Theme_dxrkv")
 
-[node name="CardContainer" type="HBoxContainer" parent="." unique_id=830407513]
+[node name="HSplitContainer" type="HSplitContainer" parent="." unique_id=1143308957]
+custom_minimum_size = Vector2(1260, 700)
 layout_mode = 1
-anchors_preset = 9
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_right = 1270.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -630.0
+offset_top = -360.0
+offset_right = 630.0
+offset_bottom = 360.0
+grow_horizontal = 2
 grow_vertical = 2
+theme = SubResource("Theme_dakft")
+dragging_enabled = false
+dragger_visibility = 1
 
-[node name="V1" type="VBoxContainer" parent="CardContainer" unique_id=1482038006]
+[node name="TabContainer" type="TabContainer" parent="HSplitContainer" unique_id=2041076735]
+layout_mode = 2
+current_tab = 0
+tab_0/title = "Cards"
+tab_1/title = "Milestones"
+tab_2/title = "Goal Conditions"
+
+[node name="CardContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer" unique_id=830407513]
+layout_mode = 2
+metadata/_tab_index = 0
+metadata/_tab_name = "Cards"
+
+[node name="V1" type="VBoxContainer" parent="HSplitContainer/TabContainer/CardContainer" unique_id=1482038006]
 layout_mode = 2
 alignment = 1
 
-[node name="Card 1" parent="CardContainer/V1" unique_id=735171781 instance=ExtResource("1_l1rk1")]
+[node name="Card 1" parent="HSplitContainer/TabContainer/CardContainer/V1" unique_id=735171781 instance=ExtResource("1_l1rk1")]
+custom_minimum_size = Vector2(400, 220)
 layout_mode = 2
 
-[node name="Card 2" parent="CardContainer/V1" unique_id=2080908741 instance=ExtResource("1_l1rk1")]
+[node name="Card 2" parent="HSplitContainer/TabContainer/CardContainer/V1" unique_id=2080908741 instance=ExtResource("1_l1rk1")]
+custom_minimum_size = Vector2(400, 220)
 layout_mode = 2
 
-[node name="Card 3" parent="CardContainer/V1" unique_id=753835254 instance=ExtResource("1_l1rk1")]
+[node name="Card 3" parent="HSplitContainer/TabContainer/CardContainer/V1" unique_id=753835254 instance=ExtResource("1_l1rk1")]
+custom_minimum_size = Vector2(400, 220)
 layout_mode = 2
 
-[node name="V2" type="VBoxContainer" parent="CardContainer" unique_id=306923304]
+[node name="V2" type="VBoxContainer" parent="HSplitContainer/TabContainer/CardContainer" unique_id=306923304]
 layout_mode = 2
 alignment = 1
 
-[node name="Card 4" parent="CardContainer/V2" unique_id=1999106796 instance=ExtResource("1_l1rk1")]
+[node name="Card 4" parent="HSplitContainer/TabContainer/CardContainer/V2" unique_id=1999106796 instance=ExtResource("1_l1rk1")]
+custom_minimum_size = Vector2(400, 220)
 layout_mode = 2
 
-[node name="Card 5" parent="CardContainer/V2" unique_id=460634737 instance=ExtResource("1_l1rk1")]
+[node name="Card 5" parent="HSplitContainer/TabContainer/CardContainer/V2" unique_id=460634737 instance=ExtResource("1_l1rk1")]
+custom_minimum_size = Vector2(400, 220)
 layout_mode = 2
 
-[node name="Card 6" parent="CardContainer/V2" unique_id=1642805007 instance=ExtResource("1_l1rk1")]
+[node name="Card 6" parent="HSplitContainer/TabContainer/CardContainer/V2" unique_id=1642805007 instance=ExtResource("1_l1rk1")]
+custom_minimum_size = Vector2(400, 220)
 layout_mode = 2
 
-[node name="OtherContainer" type="VSplitContainer" parent="CardContainer" unique_id=243292946]
+[node name="MilestoneContainer" type="VBoxContainer" parent="HSplitContainer/TabContainer" unique_id=528553918]
+visible = false
+custom_minimum_size = Vector2(804, 0)
+layout_mode = 2
+metadata/_tab_index = 1
+metadata/_tab_name = "Milestones"
+
+[node name="Scroll" type="ScrollContainer" parent="HSplitContainer/TabContainer/MilestoneContainer" unique_id=7763357]
+custom_minimum_size = Vector2(0, 689)
+layout_mode = 2
+
+[node name="VMile" type="VBoxContainer" parent="HSplitContainer/TabContainer/MilestoneContainer/Scroll" unique_id=1414032938]
+custom_minimum_size = Vector2(0, 689)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GoalContainer" type="VBoxContainer" parent="HSplitContainer/TabContainer" unique_id=1654102570]
+visible = false
+custom_minimum_size = Vector2(804, 0)
+layout_mode = 2
+script = ExtResource("3_u5opy")
+metadata/_tab_index = 2
+metadata/_tab_name = "Goal Conditions"
+
+[node name="VictoryBox" parent="HSplitContainer/TabContainer/GoalContainer" unique_id=2003516391 instance=ExtResource("4_y36n6")]
+layout_mode = 2
+
+[node name="TombolaBox" parent="HSplitContainer/TabContainer/GoalContainer" unique_id=1146558253 instance=ExtResource("4_y36n6")]
+layout_mode = 2
+
+[node name="MilestoneBox" parent="HSplitContainer/TabContainer/GoalContainer" unique_id=619306592 instance=ExtResource("4_y36n6")]
+layout_mode = 2
+
+[node name="OtherContainer" type="VSplitContainer" parent="HSplitContainer" unique_id=243292946]
 layout_mode = 2
 size_flags_horizontal = 3
 split_offsets = PackedInt32Array(100)
 split_offset = 100
 
-[node name="MilestoneContainer" type="VBoxContainer" parent="CardContainer/OtherContainer" unique_id=251390045]
+[node name="ExtraContainer" type="VBoxContainer" parent="HSplitContainer/OtherContainer" unique_id=251390045]
 layout_mode = 2
 alignment = 1
 
-[node name="GoalContainer" type="PanelContainer" parent="CardContainer/OtherContainer/MilestoneContainer" unique_id=683963604]
+[node name="TrapContainer" type="PanelContainer" parent="HSplitContainer/OtherContainer/ExtraContainer" unique_id=683963604]
 layout_mode = 2
 theme_override_styles/panel = ExtResource("3_dxrkv")
+script = ExtResource("6_j8tme")
 
-[node name="Label" type="Label" parent="CardContainer/OtherContainer/MilestoneContainer/GoalContainer" unique_id=978044522]
+[node name="Label" type="Label" parent="HSplitContainer/OtherContainer/ExtraContainer/TrapContainer" unique_id=978044522]
 layout_mode = 2
 size_flags_vertical = 1
 label_settings = SubResource("LabelSettings_4fuuu")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="CardContainer/OtherContainer/MilestoneContainer/GoalContainer" unique_id=732875486]
+[node name="Button" type="Button" parent="HSplitContainer/OtherContainer/ExtraContainer/TrapContainer" unique_id=732875486]
 visible = false
 self_modulate = Color(1, 1, 1, 0.23529412)
 layout_mode = 2
 disabled = true
 
-[node name="ChatBox" type="PanelContainer" parent="CardContainer/OtherContainer" unique_id=1824183420]
+[node name="MarkContainer" type="PanelContainer" parent="HSplitContainer/OtherContainer/ExtraContainer" unique_id=14193900]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_dxrkv")
+script = ExtResource("6_y36n6")
+
+[node name="Label" type="Label" parent="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer" unique_id=2037486684]
+layout_mode = 2
+size_flags_vertical = 1
+text = "No Free Mark Available"
+label_settings = SubResource("LabelSettings_4fuuu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer" unique_id=1310277484]
+visible = false
+self_modulate = Color(1, 1, 1, 0.23529412)
+layout_mode = 2
+disabled = true
+
+[node name="LockTimer" type="Timer" parent="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer" unique_id=1754630896]
+wait_time = 30.0
+one_shot = true
+
+[node name="LHintContainer" type="PanelContainer" parent="HSplitContainer/OtherContainer/ExtraContainer" unique_id=1184807105]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_dxrkv")
+script = ExtResource("7_l8g03")
+
+[node name="Label" type="Label" parent="HSplitContainer/OtherContainer/ExtraContainer/LHintContainer" unique_id=788513114]
+layout_mode = 2
+size_flags_vertical = 1
+text = "No Free Location Hint Available"
+label_settings = SubResource("LabelSettings_4fuuu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="HSplitContainer/OtherContainer/ExtraContainer/LHintContainer" unique_id=1424837933]
+visible = false
+self_modulate = Color(1, 1, 1, 0.23529412)
+layout_mode = 2
+disabled = true
+
+[node name="ChatBox" type="PanelContainer" parent="HSplitContainer/OtherContainer" unique_id=1824183420]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 
-[node name="VChat" type="VBoxContainer" parent="CardContainer/OtherContainer/ChatBox" unique_id=1731645379]
+[node name="VChat" type="VBoxContainer" parent="HSplitContainer/OtherContainer/ChatBox" unique_id=1731645379]
 layout_mode = 2
 
-[node name="ChatScreen" type="RichTextLabel" parent="CardContainer/OtherContainer/ChatBox/VChat" unique_id=1663768414]
+[node name="ChatScreen" type="RichTextLabel" parent="HSplitContainer/OtherContainer/ChatBox/VChat" unique_id=1663768414]
 layout_mode = 2
 size_flags_vertical = 3
 focus_mode = 2
@@ -112,23 +224,21 @@ deselect_on_focus_loss_enabled = false
 drag_and_drop_selection_enabled = false
 script = ExtResource("4_4fuuu")
 
-[node name="HChat" type="HBoxContainer" parent="CardContainer/OtherContainer/ChatBox/VChat" unique_id=2099583265]
+[node name="HChat" type="HBoxContainer" parent="HSplitContainer/OtherContainer/ChatBox/VChat" unique_id=2099583265]
 layout_mode = 2
 
-[node name="ChatInput" type="LineEdit" parent="CardContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1024832137]
+[node name="ChatInput" type="LineEdit" parent="HSplitContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1024832137]
 layout_mode = 2
 size_flags_horizontal = 3
 keep_editing_on_text_submit = true
 script = ExtResource("5_dxrkv")
 
-[node name="ChatSend" type="Button" parent="CardContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1139993462]
+[node name="ChatSend" type="Button" parent="HSplitContainer/OtherContainer/ChatBox/VChat/HChat" unique_id=1139993462]
 layout_mode = 2
 text = "SEND"
 
-[node name="TombolaCheckTimer" type="Timer" parent="." unique_id=1964231862]
-autostart = true
-
-[connection signal="pressed" from="CardContainer/OtherContainer/MilestoneContainer/GoalContainer/Button" to="." method="_on_button_pressed"]
-[connection signal="text_submitted" from="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" to="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_text_submitted"]
-[connection signal="pressed" from="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatSend" to="CardContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_chat_send_pressed"]
-[connection signal="timeout" from="TombolaCheckTimer" to="." method="_on_tombola_timer_timeout"]
+[connection signal="pressed" from="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer/Button" to="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer" method="_on_button_pressed"]
+[connection signal="timeout" from="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer/LockTimer" to="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer" method="_on_lock_timer_timeout"]
+[connection signal="pressed" from="HSplitContainer/OtherContainer/ExtraContainer/LHintContainer/Button" to="HSplitContainer/OtherContainer/ExtraContainer/LHintContainer" method="_on_button_pressed"]
+[connection signal="text_submitted" from="HSplitContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" to="HSplitContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_text_submitted"]
+[connection signal="pressed" from="HSplitContainer/OtherContainer/ChatBox/VChat/HChat/ChatSend" to="HSplitContainer/OtherContainer/ChatBox/VChat/HChat/ChatInput" method="_on_chat_send_pressed"]

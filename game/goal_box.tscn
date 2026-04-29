@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://djqqlpxc0sd3d"]
+
+[ext_resource type="Script" uid="uid://c0r5rn6wiqulc" path="res://game/goal_box.gd" id="1_6l6cp"]
+[ext_resource type="StyleBox" uid="uid://crqpyduxbe1xi" path="res://game/styles/milestone_box_background.tres" id="2_ujktw"]
+[ext_resource type="Theme" uid="uid://dn2vu1bmn781u" path="res://game/styles/milestone_bar.tres" id="3_vif74"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xq66r"]
+bg_color = Color(0.7372549, 0.6666667, 0.54509807, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.36862746, 0.31764707, 0.23137255, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+corner_detail = 4
+
+[sub_resource type="Theme" id="Theme_pg7bg"]
+Panel/styles/panel = SubResource("StyleBoxFlat_xq66r")
+
+[sub_resource type="LabelSettings" id="LabelSettings_48qmy"]
+font_size = 34
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 1)
+
+[node name="Goal" type="Control" unique_id=2003516391]
+custom_minimum_size = Vector2(800, 120)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -480.0
+offset_bottom = -600.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6l6cp")
+
+[node name="Background" type="Panel" parent="." unique_id=1407394932]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 788.0
+offset_bottom = 118.0
+theme = SubResource("Theme_pg7bg")
+theme_override_styles/panel = ExtResource("2_ujktw")
+
+[node name="V" type="VBoxContainer" parent="." unique_id=833741808]
+custom_minimum_size = Vector2(770, 110)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 770.0
+offset_bottom = 115.0
+alignment = 1
+
+[node name="NameBox" type="Label" parent="V" unique_id=80724353]
+layout_mode = 2
+text = "GOAL NAME"
+label_settings = SubResource("LabelSettings_48qmy")
+horizontal_alignment = 1
+
+[node name="Bar" type="ProgressBar" parent="V" unique_id=1608879353]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+theme = ExtResource("3_vif74")
+step = 1.0
+allow_greater = true
+show_percentage = false
+
+[node name="Label" type="Label" parent="V/Bar" unique_id=1273561644]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "12345 / 67890"
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="." unique_id=1367829708]
+visible = false
+self_modulate = Color(1, 1, 1, 0.23529412)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 784.0
+offset_bottom = 114.0
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

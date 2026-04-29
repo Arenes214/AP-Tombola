@@ -2,10 +2,15 @@ extends Node
 
 var game_scene = preload("res://game/game.tscn")
 
+var conn_try = false
+var conn_yes = false
 var all_save_slots = {}
+var current_scene: Node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Archipelago.connected.connect(_on_connected)
+	Archipelago.connectionrefused.connect(_on_connection_refused)
+	Archipelago.disconnected.connect(_on_disconnected)
 	restore_saves()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -13,6 +18,10 @@ func _process(delta: float) -> void:
 	pass
 
 func restore_saves():
+	if %SaveBox.get_child_count() > 0:
+		for child in %SaveBox.get_children():
+			child.queue_free()
+		
 	if not FileAccess.file_exists("user://saveslot1.tmblasave"):
 		return # No Save
 	
@@ -37,8 +46,7 @@ func restore_saves():
 		save_node.login_from_save.connect(_connect_from_save)
 		save_node.delete_save_request.connect(_delete_save)
 		%SaveBox.add_child(save_node)
-	
-	
+
 
 func _on_connect_button_pressed() -> void: # Connect without saving
 	connect_to_ap()
@@ -53,7 +61,7 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
 		"password" = %LoginBox/PasswordField.text,
 		"ip_hidden" = %LoginBox/IpHideButton.button_pressed
 	}
-	all_save_slots[all_save_slots.size()+1] = save_info
+	all_save_slots[all_save_slots.size()] = save_info
 	_write_saves()
 	
 	connect_to_ap()
@@ -62,15 +70,56 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
 
 func _on_connected(conn: ConnectionInfo, json: Dictionary):
 	GameOptions.automark = %LoginBox/AutoClickButton.button_pressed
+	$"../LoginBox/ConnLabel".clear()
+	$"../LoginBox/ConnLabel".add_text("Connected!")
+	
 	var scene = game_scene.instantiate()
 	get_tree().root.add_child(scene)
+	current_scene = scene
 	%LoginBox.hide()
+	$"../ScrollContainer".hide()
+	conn_try = false
+	conn_yes = true
 
 func connect_to_ap():
+	conn_try = true
+	conn_yes = false
 	Archipelago.ap_connect(%LoginBox/IPField.text, %LoginBox/PortField.text, %LoginBox/NameField.text, %LoginBox/PasswordField.text)
+	$"../LoginBox/ConnLabel".clear()
+	$"../LoginBox/ConnLabel".add_text("Connecting...")
+	
+	
+
+func _on_connection_refused(conn, json):
+	$"../LoginBox/ConnLabel".clear()
+	$"../LoginBox/ConnLabel".add_text("Connection refused with error %s" % json["errors"])
+	conn_try = false
+
+var retry = true
+func _on_disconnected():
+	if conn_try:
+		$"../LoginBox/ConnLabel".clear()
+		$"../LoginBox/ConnLabel".add_text("Connection not successful. Check if the room is open...")
+	elif conn_yes and retry:
+		retry = not retry
+		$"../LoginBox/ConnLabel".clear()
+		$"../LoginBox/ConnLabel".add_text("Connection Lost, trying to Reconnect...")
+	else:
+		retry = not retry
+		$"../LoginBox/ConnLabel".clear()
+		$"../LoginBox/ConnLabel".add_text("Connection Lost!")
+	
+	if current_scene:
+		current_scene.queue_free()
+		%LoginBox.show()
+		$"../ScrollContainer".show()
+	conn_try = false
 
 func _connect_from_save(slot_name: String, ip: String, port: String, password: String):
+	conn_try = true
 	Archipelago.ap_connect(ip, port, slot_name, password)
+	$"../LoginBox/ConnLabel".clear()
+	$"../LoginBox/ConnLabel".add_text("Connecting...")
 
 func _delete_save(save_name: String):
 	for slot_i in all_save_slots:
@@ -83,8 +132,10 @@ func _delete_save(save_name: String):
 					node.queue_free()
 
 func _write_saves():
-		var save_file = FileAccess.open("user://saveslot1.tmblasave", FileAccess.WRITE)
+	var save_file = FileAccess.open("user://saveslot1.tmblasave", FileAccess.WRITE)
 		
-		for slot in all_save_slots.values():
-			var json_string = JSON.stringify(slot)
-			save_file.store_line(json_string)
+	for slot in all_save_slots.values():
+		var json_string = JSON.stringify(slot)
+		save_file.store_line(json_string)
+	save_file.close()
+	restore_saves()

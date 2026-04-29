@@ -69,10 +69,6 @@ secret = true
 layout_mode = 2
 text = "Automatic Number Clicking"
 
-[node name="IpHideButton" type="CheckButton" parent="LoginBox" unique_id=1312239452]
-layout_mode = 2
-text = "Do not Display IP Address in Saved Slots"
-
 [node name="ConnectButton" type="Button" parent="LoginBox" unique_id=1161150009]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
@@ -86,10 +82,18 @@ layout_mode = 2
 layout_mode = 2
 placeholder_text = "Save Name"
 
+[node name="IpHideButton" type="CheckButton" parent="LoginBox" unique_id=1312239452]
+layout_mode = 2
+text = "Do not Display This IP Address in Saved Slots"
+
 [node name="SaveConnectButton" type="Button" parent="LoginBox" unique_id=25530505]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 text = "Save Slot Info and Connect"
+
+[node name="ConnLabel" type="RichTextLabel" parent="LoginBox" unique_id=831355030]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1843666619]
 custom_minimum_size = Vector2(200, 720)
