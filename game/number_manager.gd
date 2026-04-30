@@ -21,6 +21,7 @@ var is_markable = false
 var is_restoring = false
 var current_mark = 0
 var middle_of_free = false
+var middle_of_trap = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -34,7 +35,7 @@ func set_number(number: int, col: int, row: int):
 		n = number
 		col_id = col
 		row_id = row
-		Archipelago.conn.retrieve(str(n), _restore_previous_mark)
+		Archipelago.conn.retrieve("Tombola P%s %s" % [Archipelago.conn.player_id,str(n)], _restore_previous_mark)
 
 # Mark types:
 # 1 = Orange
@@ -50,6 +51,8 @@ func mark(mark_type: int): #func name is kinda misleading fuck
 		current_mark = 1
 		if has_been_marked:
 			return
+		if middle_of_trap:
+			return
 		$PanelContainer.add_theme_stylebox_override("panel", stylebox_orange)
 		$PanelContainer/Label/Button.visible = true
 		is_markable = true
@@ -63,7 +66,7 @@ func mark(mark_type: int): #func name is kinda misleading fuck
 		has_been_marked = true
 		is_markable = false
 		number_pressed.emit(n, row_id, 0)
-		Archipelago.send_command("Set",{"key": str(n), "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 2}]})
+		Archipelago.send_command("Set",{"key": "Tombola P%s %s" % [Archipelago.conn.player_id,str(n)], "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 2}]})
 		
 		
 	elif mark_type == 3:
@@ -75,9 +78,9 @@ func mark(mark_type: int): #func name is kinda misleading fuck
 		has_been_marked = true
 		is_markable = false
 		number_pressed.emit(n, row_id, 3)
-		Archipelago.send_command("Set",{"key": str(n), "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 3}]})
+		Archipelago.send_command("Set",{"key": "Tombola P%s %s" % [Archipelago.conn.player_id,str(n)], "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 3}]})
 		if not is_restoring:
-			Archipelago.send_command("Set",{"key": "Free Mark Used", "default":0, "want_reply": true, "operations":[{"operation": "add", "value": 1}]})
+			Archipelago.send_command("Set",{"key": "Tombola P%s Free Mark Used" % Archipelago.conn.player_id, "default":0, "want_reply": true, "operations":[{"operation": "add", "value": 1}]})
 		
 		
 	elif mark_type == 4:
@@ -92,18 +95,23 @@ func mark(mark_type: int): #func name is kinda misleading fuck
 		$PanelContainer.add_theme_stylebox_override("panel", stylebox_clear)
 		$PanelContainer/Label/Button.visible = false
 		$PanelContainer/Label/FakeButton.visible  = true
+		middle_of_trap = true
 		
 	
 	elif mark_type == 12:
 		if (current_mark == 0 or current_mark == 1):
 			$PanelContainer/Label/Button.visible = false
 			$PanelContainer.add_theme_stylebox_override("panel", stylebox_black)
+			middle_of_trap = true
 	
-func restore_mark():
+func restore_mark(was_a_free):
+	if not was_a_free:
+		middle_of_trap = false
 	_restore_labels()
 	mark(current_mark)
 	$PanelContainer/Label/FakeButton.visible  = false
-	middle_of_free = false
+	if was_a_free:
+		middle_of_free = false
 
 func _restore_labels():
 	if n == 0:

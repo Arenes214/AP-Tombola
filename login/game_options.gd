@@ -11,3 +11,4 @@ func _process(delta: float) -> void:
 	pass
 
 var automark: bool = false
+var actual_automark: bool = false

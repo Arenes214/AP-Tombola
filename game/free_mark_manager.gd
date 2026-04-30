@@ -1,7 +1,7 @@
 extends PanelContainer
 
 signal using_free_mark
-signal cancel_free_mark
+signal cancel_free_mark(was_a_free: bool)
 
 var obtained = 0
 var used = 0
@@ -9,7 +9,7 @@ var state = 0
 var usable = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Archipelago.conn.set_notify("Free Mark Used", _on_mark_used)
+	Archipelago.conn.set_notify("Tombola P%s Free Mark Used" % Archipelago.conn.player_id, _on_mark_used)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -18,13 +18,13 @@ func _process(delta: float) -> void:
 
 func possible_item():
 	obtained += 1
-	Archipelago.conn.retrieve("Free Mark Used", _after_retrieve)
+	Archipelago.conn.retrieve("Tombola P%s Free Mark Used" % Archipelago.conn.player_id, _after_retrieve)
 
 func _on_mark_used(_nope):
 	reset_usable()
 
 func reset_usable():
-	Archipelago.conn.retrieve("Free Mark Used", _after_retrieve)
+	Archipelago.conn.retrieve("Tombola P%s Free Mark Used" % Archipelago.conn.player_id, _after_retrieve)
 
 func _after_retrieve(proc):
 	if not proc:
@@ -49,11 +49,11 @@ func mark_usable(n: int):
 	
 func _on_button_pressed() -> void:
 	if state == 0:
-		Archipelago.conn.retrieve("Free Mark Lock", _on_lock_retrieved)
+		Archipelago.conn.retrieve("Tombola P%s Free Mark Lock" % Archipelago.conn.player_id, _on_lock_retrieved)
 	else:
 		_free_lock()
 		$LockTimer.stop()
-		cancel_free_mark.emit()
+		cancel_free_mark.emit(true)
 	
 func _refuse_free_mark():
 	state = 0
@@ -61,10 +61,11 @@ func _refuse_free_mark():
 	reset_usable()
 
 func _free_lock():
-	Archipelago.send_command("Set",{"key": "Free Mark Lock", "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 0}]})
+	Archipelago.send_command("Set",{"key": "Tombola P%s Free Mark Lock" % Archipelago.conn.player_id, "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 0}]})
+
 
 func _set_lock():
-	Archipelago.send_command("Set",{"key": "Free Mark Lock", "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": _get_time()}]})
+	Archipelago.send_command("Set",{"key": "Tombola P%s Free Mark Lock" % Archipelago.conn.player_id, "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": _get_time()}]})
 
 func _on_lock_retrieved(lock):
 	if not lock or lock + 30 <= _get_time():
@@ -81,5 +82,5 @@ func _get_time():
 	return result
 
 func _on_lock_timer_timeout() -> void:
-	cancel_free_mark.emit()
+	cancel_free_mark.emit(true)
 	_refuse_free_mark()

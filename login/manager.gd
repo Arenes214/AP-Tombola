@@ -1,9 +1,12 @@
 extends Node
 
+var client_ver = 2
 var game_scene = preload("res://game/game.tscn")
 
 var conn_try = false
 var conn_yes = false
+var version_mismatch = false
+
 var all_save_slots = {}
 var current_scene: Node
 # Called when the node enters the scene tree for the first time.
@@ -69,7 +72,22 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
  # TODO slot validation
 
 func _on_connected(conn: ConnectionInfo, json: Dictionary):
-	GameOptions.automark = %LoginBox/AutoClickButton.button_pressed
+	if not Archipelago.conn.slot_data.has("Genver"):
+		Archipelago.ap_disconnect()
+		$"../LoginBox/ConnLabel".clear()
+		$"../LoginBox/ConnLabel".add_text("Error: The room you tried to connect to was generated with APWorld version 0.1.x .\nThis client is not currently backwards compatible with seeds generated on 0.1.x .\nIf it has been a few days since the release of client 0.2.0, check for a possible 0.2.x update that will bring backwards compatibility.\n(I, the dev, promise that the update will happen)")
+		version_mismatch = true
+		return
+	else:
+		var genver = Archipelago.conn.slot_data["Genver"]
+		if genver > client_ver:
+			Archipelago.ap_disconnect()
+			$"../LoginBox/ConnLabel".clear()
+			$"../LoginBox/ConnLabel".add_text("Error: The room you tried to connect was generated with an APWorld newer than what the client currently supports.\n Update your client.")
+			version_mismatch = true
+			return
+	
+	GameOptions.actual_automark = %LoginBox/AutoClickButton.button_pressed
 	$"../LoginBox/ConnLabel".clear()
 	$"../LoginBox/ConnLabel".add_text("Connected!")
 	
@@ -89,26 +107,29 @@ func connect_to_ap():
 	$"../LoginBox/ConnLabel".add_text("Connecting...")
 	
 	
-
+var refused = false
 func _on_connection_refused(conn, json):
 	$"../LoginBox/ConnLabel".clear()
 	$"../LoginBox/ConnLabel".add_text("Connection refused with error %s" % json["errors"])
+	refused = true
 	conn_try = false
 
 var retry = true
 func _on_disconnected():
+	if version_mismatch:
+		return
 	if conn_try:
 		$"../LoginBox/ConnLabel".clear()
 		$"../LoginBox/ConnLabel".add_text("Connection not successful. Check if the room is open...")
-	elif conn_yes and retry:
+	elif conn_yes and retry and not refused:
 		retry = not retry
 		$"../LoginBox/ConnLabel".clear()
 		$"../LoginBox/ConnLabel".add_text("Connection Lost, trying to Reconnect...")
-	else:
+	elif not refused:
 		retry = not retry
 		$"../LoginBox/ConnLabel".clear()
 		$"../LoginBox/ConnLabel".add_text("Connection Lost!")
-	
+	refused = false
 	if current_scene:
 		current_scene.queue_free()
 		%LoginBox.show()

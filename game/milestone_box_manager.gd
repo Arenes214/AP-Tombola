@@ -64,13 +64,13 @@ func populate_milestone(milestone_name, milestone_id_f, game_manager_node: Node)
 					collection_string += "."
 				else:
 					collection_string += ", "
-				$V/DescBox.text = "Mark the following numbers: %s" % collection_string
+				$V/DescBox.text = "Obtain the following numbers: %s" % collection_string
 			
 			$V/Bar.max_value = collection.size()
 			$V/Bar/Label.text = "0 / %s" % collection.size()
 			label_max = collection.size()
 			what_score = 2
-			game_manager_node.n_marked_update.connect(_on_marked_update)
+			game_manager_node.n_obtained_update.connect(_on_obtained_update)
 			
 		
 		3: # Total Count
@@ -81,7 +81,7 @@ func populate_milestone(milestone_name, milestone_id_f, game_manager_node: Node)
 					target = int(item[2])
 			
 			$V/NameBox.text = milestone_name
-			$V/DescBox.text = "Get the sum of all numbers marked to %s or greater" % target
+			$V/DescBox.text = "Get the sum of all numbers obtained to %s or greater" % target
 			$V/Bar.max_value = target
 			$V/Bar/Label.text = "0 / %s" % target
 			label_max = target
@@ -95,10 +95,10 @@ func populate_milestone(milestone_name, milestone_id_f, game_manager_node: Node)
 			
 			$V/NameBox.text = milestone_name
 			if even_or_odd == 1:
-				$V/DescBox.text = "Mark %s odd numbers" % target
+				$V/DescBox.text = "Obtain %s odd numbers" % target
 				game_manager_node.n_odd_count_update.connect(_on_odd_update)
 			else:
-				$V/DescBox.text = "Mark %s even numbers" % target
+				$V/DescBox.text = "Obtain %s even numbers" % target
 				game_manager_node.n_even_count_update.connect(_on_even_update)
 			$V/Bar.max_value = target
 			$V/Bar/Label.text = "0 / %s" % target
@@ -106,7 +106,7 @@ func populate_milestone(milestone_name, milestone_id_f, game_manager_node: Node)
 			what_score = 4
 	
 	# Restore previous status
-	Archipelago.conn.retrieve(str(location_id), _restore_previous_status)
+	Archipelago.conn.retrieve("Tombola P%s %s" % [Archipelago.conn.player_id,str(location_id)], _restore_previous_status)
 
 func set_status(status: int):
 	match status:
@@ -116,7 +116,7 @@ func set_status(status: int):
 				$V/Bar.theme = bar_green
 				$Button.visible = true
 				
-				if GameOptions.automark:
+				if GameOptions.actual_automark: # TODO proper fix
 					_on_button_pressed()
 		2: # Sent
 			$Background.add_theme_stylebox_override("panel", stylebox_green)
@@ -124,7 +124,7 @@ func set_status(status: int):
 			$V/Bar.theme = bar_green
 			milestone_achieved.emit(location_id)
 			is_achieved = true
-			Archipelago.send_command("Set",{"key": str(location_id), "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 2}]})
+			Archipelago.send_command("Set",{"key": "Tombola P%s %s" % [Archipelago.conn.player_id,str(location_id)], "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 2}]})
 
 func _on_location_sent(id: int):
 	var id_score = str(id)
@@ -137,7 +137,7 @@ func _on_location_sent(id: int):
 		if ($V/Bar.value >= $V/Bar.max_value):
 			set_status(1)
 
-func _on_marked_update(n: int, _n_list: Array):
+func _on_obtained_update(n: int, _n_list: Array):
 	if type2_collection.has(n):
 		$V/Bar.value += 1
 		$V/Bar/Label.text = "%s / %s" % [int($V/Bar.value), int($V/Bar.max_value)]

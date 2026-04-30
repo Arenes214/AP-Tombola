@@ -1,14 +1,5 @@
 extends Control
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 signal possible_regular_location_send(card_id: int, score_type: int)
 signal possible_unlock_loc_send(card_id: int)
 signal possible_rowsanity_location_send(card_id: int, score_type: int, row_id: int, decina_row: int)
@@ -18,16 +9,27 @@ signal number_was_marked(n: int, special: int)
 var card_id: int = 0
 var own_card: Array
 var is_locked: bool = false
+var is_unlockable: bool = false
 var has_scored_tombola: bool = false
 
 func lock():
 	is_locked = true
 	$VBoxContainer.visible = false
 	$LockPanel.visible =  true
+	$LockPanel/UnlockButton.text = "Card %s Unlock Not Found" % (card_id+1)
 
 func allow_unlock():
-	$LockPanel/UnlockButton.text = "Unlock!"
+	$LockPanel/UnlockButton.text = "Unlock Card %s!" % (card_id+1)
 	$LockPanel/UnlockButton.disabled = false
+	is_unlockable = true
+	Archipelago.conn.retrieve("Tombola P%s Unlock %s" % [Archipelago.conn.player_id, (card_id+1)], _restore_unlock)
+
+func _restore_unlock(proc):
+	if not proc:
+		return
+	var status = int(proc)
+	if status == 1:
+		_on_unlock_button_pressed()
 
 func populate_card(card_arrays: Array, card_iden: int):
 	card_id = card_iden
@@ -52,10 +54,10 @@ func set_all_numbers_status(only_numbers: bool, status_type: int):
 			else:
 				node.mark(status_type)
 
-func restore_status():
+func restore_status(was_a_free: bool):
 	for hbox in $VBoxContainer.get_children():
 		for node in hbox.get_children():
-			node.restore_mark()
+			node.restore_mark(was_a_free)
 
 
 func automark_numbers():
@@ -110,3 +112,5 @@ func _on_unlock_button_pressed() -> void:
 	if not is_locked and GameOptions.automark:
 		automark_numbers()
 	possible_unlock_loc_send.emit(card_id)
+	Archipelago.send_command("Set",{"key": "Tombola P%s Unlock %s" % [Archipelago.conn.player_id, (card_id+1)], "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 1}]})
+	
