@@ -38,21 +38,25 @@ func _ready() -> void:
 		card_node.possible_unlock_loc_send.connect(_on_possible_unlock)
 		card_node.possible_rowsanity_location_send.connect(_on_possible_rowsanity_location)
 		card_node.number_was_marked.connect(_on_number_was_marked)
-		card_node.lock()
-		
-		# TODO Check backwards compat
-		#if (Archipelago.conn.slot_data.has("Cards Locked")):
-			#if Archipelago.conn.slot_data["Cards Locked"].find(float(i)) != -1:
-				#card_node.lock()
-				#pass
+		if not GameOptions.enable_genver1_fixes:
+			card_node.lock()
+		else:
+			if (Archipelago.conn.slot_data.has("Cards Locked")):
+				if Archipelago.conn.slot_data["Cards Locked"].find(float(i)) != -1:
+					card_node.lock()
+				else:
+					card_node.allow_unlock()
 	
 	# Populate Milestones
-	var vmile_node = self.find_child("VMile", true)
-	for milestone in Archipelago.conn.slot_data["Milestones Chosen"]:
-		var child = preload("res://game/milestone_box.tscn").instantiate()
-		child.populate_milestone(milestone[0],milestone[1], self)
-		vmile_node.add_child(child)
-		child.milestone_achieved.connect(_on_possible_milestone_location)
+	if GameOptions.enable_genver1_fixes:
+		$HSplitContainer/TabContainer.set_tab_disabled(1, true)
+	else:
+		var vmile_node = self.find_child("VMile", true)
+		for milestone in Archipelago.conn.slot_data["Milestones Chosen"]:
+			var child = preload("res://game/milestone_box.tscn").instantiate()
+			child.populate_milestone(milestone[0],milestone[1], self)
+			vmile_node.add_child(child)
+			child.milestone_achieved.connect(_on_possible_milestone_location)
 	
 	# Populate Goals
 	var goal_node = self.find_child("GoalContainer", true)

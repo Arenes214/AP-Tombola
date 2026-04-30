@@ -73,11 +73,11 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
 
 func _on_connected(conn: ConnectionInfo, json: Dictionary):
 	if not Archipelago.conn.slot_data.has("Genver"):
-		Archipelago.ap_disconnect()
-		$"../LoginBox/ConnLabel".clear()
-		$"../LoginBox/ConnLabel".add_text("Error: The room you tried to connect to was generated with APWorld version 0.1.x .\nThis client is not currently backwards compatible with seeds generated on 0.1.x .\nIf it has been a few days since the release of client 0.2.0, check for a possible 0.2.x update that will bring backwards compatibility.\n(I, the dev, promise that the update will happen)")
-		version_mismatch = true
-		return
+		#Archipelago.ap_disconnect()
+		#$"../LoginBox/ConnLabel".clear()
+		#$"../LoginBox/ConnLabel".add_text("Error: The room you tried to connect to was generated with APWorld version 0.1.x .\nThis client is not currently backwards compatible with seeds generated on 0.1.x .\nIf it has been a few days since the release of client 0.2.0, check for a possible 0.2.x update that will bring backwards compatibility.\n(I, the dev, promise that the update will happen)")
+		#version_mismatch = true
+		GameOptions.enable_genver1_fixes = true
 	else:
 		var genver = Archipelago.conn.slot_data["Genver"]
 		if genver > client_ver:
