@@ -46,6 +46,8 @@ func _ready() -> void:
 					card_node.lock()
 				else:
 					card_node.allow_unlock()
+			else:
+				card_node.allow_unlock()
 	
 	# Populate Milestones
 	if GameOptions.enable_genver1_fixes:
