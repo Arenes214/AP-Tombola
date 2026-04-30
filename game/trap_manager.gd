@@ -88,6 +88,7 @@ func _continue_trap(proc):
 	if shield_received > sh_used_local_count:
 		sh_used_local_count += 1
 		Archipelago.send_command("Set",{"key": "Tombola P%s Shield Used" % Archipelago.conn.player_id, "default":0, "want_reply": true, "operations":[{"operation": "add", "value": 1}]})
+		Archipelago.send_command("Set",{"key": "Tombola P%s Last Trap Completed" % Archipelago.conn.player_id, "default":0, "want_reply": true, "operations":[{"operation": "add", "value": 1}]})
 		middle_of_trap_try = false
 		if to_execute_queue.size() > 0:
 			execute_trap()
@@ -112,6 +113,7 @@ func end_trap():
 	middle_of_trap_try = false
 	middle_of_trap_exec = false
 	finish_trap.emit()
+	print("size %s" % to_execute_queue.size())
 	if to_execute_queue.size() > 0:
 		execute_trap()
 

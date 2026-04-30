@@ -83,7 +83,9 @@ func on_number_pressed(n: int, row_id: int, special:int):
 		var other_rows = [0,1,2]
 		other_rows.erase(row_id)
 		
+		var rowsanity_decina_other5 = 0
 		for other_row_id in other_rows:
+			rowsanity_decina_other5 = 0
 			if not count == 10:
 				count = 5 # Reset count only if it was not decina already
 			for i in range(9):
@@ -91,12 +93,13 @@ func on_number_pressed(n: int, row_id: int, special:int):
 				if n_node.n != 0:
 					if n_node.has_been_marked == true:
 						count += 1
+						rowsanity_decina_other5 += 1
 					else:
 						break
 				if count == 10:
 					possible_regular_location_send.emit(card_id, 6)
+				if (rowsanity_decina_other5 == 5):
 					possible_rowsanity_location_send.emit(card_id, 6, row_id, other_row_id)
-					pass
 		
 		if count == 15:
 			possible_regular_location_send.emit(card_id, 7)

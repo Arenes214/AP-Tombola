@@ -182,7 +182,8 @@ func _on_starting_trap(id: int):
 	middle_of_trap = true
 	GameOptions.automark = false
 	var mark_node = self.find_child("MarkContainer", true)
-	mark_node._on_button_pressed()
+	if mark_node.state == 1:
+		mark_node._on_button_pressed()
 	if id == 301:
 		for i in range(1,7):
 			var card_node = card_id_to_node(i)
