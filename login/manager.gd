@@ -116,9 +116,12 @@ func _on_connection_refused(conn, json):
 
 var retry = true
 func _on_disconnected():
-	if version_mismatch:
+	if GameOptions.intentional_disconnect:
+		$"../LoginBox/ConnLabel".clear()
+		GameOptions.intentional_disconnect = false
+	elif version_mismatch:
 		return
-	if conn_try:
+	elif conn_try:
 		$"../LoginBox/ConnLabel".clear()
 		$"../LoginBox/ConnLabel".add_text("Connection not successful. Check if the room is open...")
 	elif conn_yes and retry and not refused:

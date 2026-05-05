@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cr3n7po1s086k" path="res://game/goal_manager.gd" id="3_u5opy"]
 [ext_resource type="Script" uid="uid://ouwa4nm2rwol" path="res://game/chat/chat_screen.gd" id="4_4fuuu"]
 [ext_resource type="PackedScene" uid="uid://djqqlpxc0sd3d" path="res://game/goal_box.tscn" id="4_y36n6"]
+[ext_resource type="Script" uid="uid://cb35rwkai31yf" path="res://game/options_manager_ingame.gd" id="5_3vho3"]
 [ext_resource type="Script" uid="uid://bh62kj53ogtxp" path="res://game/chat_input.gd" id="5_dxrkv"]
 [ext_resource type="Script" uid="uid://dpxtmw5wblej7" path="res://game/trap_manager.gd" id="6_j8tme"]
 [ext_resource type="Script" uid="uid://cl78ikyy8tncl" path="res://game/free_mark_manager.gd" id="6_y36n6"]
@@ -64,6 +65,7 @@ current_tab = 0
 tab_0/title = "Cards"
 tab_1/title = "Milestones"
 tab_2/title = "Goal Conditions"
+tab_3/title = "Options"
 
 [node name="CardContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer" unique_id=830407513]
 layout_mode = 2
@@ -135,6 +137,27 @@ layout_mode = 2
 
 [node name="MilestoneBox" parent="HSplitContainer/TabContainer/GoalContainer" unique_id=619306592 instance=ExtResource("4_y36n6")]
 layout_mode = 2
+
+[node name="OptionsContainer" type="VBoxContainer" parent="HSplitContainer/TabContainer" unique_id=1291382607]
+visible = false
+custom_minimum_size = Vector2(804, 0)
+layout_mode = 2
+script = ExtResource("5_3vho3")
+metadata/_tab_index = 3
+metadata/_tab_name = "Options"
+
+[node name="AutoMarkButton" type="CheckButton" parent="HSplitContainer/TabContainer/OptionsContainer" unique_id=1674003502]
+layout_mode = 2
+text = "Automatic Number Mark"
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/TabContainer/OptionsContainer" unique_id=1986707938]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="DisconnectButton" type="Button" parent="HSplitContainer/TabContainer/OptionsContainer" unique_id=1439162743]
+layout_mode = 2
+toggle_mode = true
+text = "Disconnect"
 
 [node name="OtherContainer" type="VSplitContainer" parent="HSplitContainer" unique_id=243292946]
 layout_mode = 2
@@ -237,6 +260,8 @@ script = ExtResource("5_dxrkv")
 layout_mode = 2
 text = "SEND"
 
+[connection signal="toggled" from="HSplitContainer/TabContainer/OptionsContainer/AutoMarkButton" to="HSplitContainer/TabContainer/OptionsContainer" method="_on_auto_mark_button_toggled"]
+[connection signal="pressed" from="HSplitContainer/TabContainer/OptionsContainer/DisconnectButton" to="HSplitContainer/TabContainer/OptionsContainer" method="_on_disconnect_button_pressed"]
 [connection signal="pressed" from="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer/Button" to="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer" method="_on_button_pressed"]
 [connection signal="timeout" from="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer/LockTimer" to="HSplitContainer/OtherContainer/ExtraContainer/MarkContainer" method="_on_lock_timer_timeout"]
 [connection signal="pressed" from="HSplitContainer/OtherContainer/ExtraContainer/LHintContainer/Button" to="HSplitContainer/OtherContainer/ExtraContainer/LHintContainer" method="_on_button_pressed"]

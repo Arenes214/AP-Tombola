@@ -148,7 +148,6 @@ func _stall_timer():
 	
 
 func _stalled_first_automark():
-	print("firing delayed")
 	first_mark_call = false
 	if GameOptions.actual_automark and not middle_of_trap:
 		GameOptions.automark = true

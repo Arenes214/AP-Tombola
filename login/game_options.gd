@@ -13,3 +13,5 @@ func _process(delta: float) -> void:
 var automark: bool = false
 var actual_automark: bool = false
 var enable_genver1_fixes: bool = false
+
+var intentional_disconnect = false

@@ -67,7 +67,7 @@ secret = true
 
 [node name="AutoClickButton" type="CheckButton" parent="LoginBox" unique_id=355507145]
 layout_mode = 2
-text = "Automatic Number Clicking"
+text = "Automatic Number Mark"
 
 [node name="ConnectButton" type="Button" parent="LoginBox" unique_id=1161150009]
 custom_minimum_size = Vector2(100, 0)
