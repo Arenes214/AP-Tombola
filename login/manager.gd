@@ -12,6 +12,9 @@ var current_scene: Node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	$"../VersionLabel".text = "Client %s" % Archipelago.AP_CLIENT_VERSION
+	if OS.get_name() == "Android":
+		var y_old = $"../ScrollContainer".get_v_scroll_bar().size[1]
+		$"../ScrollContainer".get_v_scroll_bar().custom_minimum_size = Vector2(20,y_old)
 	Archipelago.connected.connect(_on_connected)
 	Archipelago.connectionrefused.connect(_on_connection_refused)
 	Archipelago.disconnected.connect(_on_disconnected)

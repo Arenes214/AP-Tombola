@@ -30,6 +30,11 @@ signal milestone_location_sent(id: int)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# Android Larger Bar
+	if OS.get_name() == "Android":
+		var old_y = $HSplitContainer/TabContainer/MilestoneContainer/Scroll.get_v_scroll_bar().size[1]
+		$HSplitContainer/TabContainer/MilestoneContainer/Scroll.get_v_scroll_bar().custom_minimum_size = Vector2(20,old_y)
+	
 	# Populate cards with their numbers and connect to signals
 	for i in range (1,7):
 		var card_node = card_id_to_node(i)

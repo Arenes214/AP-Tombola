@@ -61,13 +61,14 @@ dragger_visibility = 1
 
 [node name="TabContainer" type="TabContainer" parent="HSplitContainer" unique_id=2041076735]
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 tab_0/title = "Cards"
 tab_1/title = "Milestones"
 tab_2/title = "Goal Conditions"
 tab_3/title = "Options"
 
 [node name="CardContainer" type="HBoxContainer" parent="HSplitContainer/TabContainer" unique_id=830407513]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 metadata/_tab_name = "Cards"
@@ -105,7 +106,6 @@ custom_minimum_size = Vector2(400, 220)
 layout_mode = 2
 
 [node name="MilestoneContainer" type="VBoxContainer" parent="HSplitContainer/TabContainer" unique_id=528553918]
-visible = false
 custom_minimum_size = Vector2(804, 0)
 layout_mode = 2
 metadata/_tab_index = 1
