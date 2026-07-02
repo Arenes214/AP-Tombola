@@ -4,6 +4,7 @@ signal possible_regular_location_send(card_id: int, score_type: int)
 signal possible_unlock_loc_send(card_id: int)
 signal possible_rowsanity_location_send(card_id: int, score_type: int, row_id: int, decina_row: int)
 
+
 signal number_was_marked(n: int, special: int)
 
 var card_id: int = 0

@@ -1,6 +1,6 @@
 extends Node
 
-var client_ver = 2
+var client_ver = 3
 var game_scene = preload("res://game/game.tscn")
 
 var conn_try = false
@@ -21,6 +21,7 @@ func _process(delta: float) -> void:
 	pass
 
 func restore_saves():
+	all_save_slots.clear()
 	if %SaveBox.get_child_count() > 0:
 		for child in %SaveBox.get_children():
 			child.queue_free()
@@ -72,6 +73,7 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
  # TODO slot validation
 
 func _on_connected(conn: ConnectionInfo, json: Dictionary):
+	print(Archipelago.conn.slot_data)
 	if not Archipelago.conn.slot_data.has("Genver"):
 		#Archipelago.ap_disconnect()
 		#$"../LoginBox/ConnLabel".clear()
@@ -116,6 +118,7 @@ func _on_connection_refused(conn, json):
 
 var retry = true
 func _on_disconnected():
+	GameOptions.enable_genver1_fixes = false
 	if GameOptions.intentional_disconnect:
 		$"../LoginBox/ConnLabel".clear()
 		GameOptions.intentional_disconnect = false
@@ -146,14 +149,15 @@ func _connect_from_save(slot_name: String, ip: String, port: String, password: S
 	$"../LoginBox/ConnLabel".add_text("Connecting...")
 
 func _delete_save(save_name: String):
+	var marked_delete: Array
 	for slot_i in all_save_slots:
 		var slot = all_save_slots[slot_i]
 		if slot["save_name"] == save_name:
-			all_save_slots.erase(slot_i)
-			_write_saves()
-			for node in %SaveBox.get_children():
-				if node.save_name == save_name:
-					node.queue_free()
+			marked_delete.append(slot_i)
+	for marked in marked_delete:
+		all_save_slots.erase(marked)
+	_write_saves()
+	restore_saves()
 
 func _write_saves():
 	var save_file = FileAccess.open("user://saveslot1.tmblasave", FileAccess.WRITE)

@@ -43,6 +43,10 @@ func _parse_hint_message(json: Dictionary):
 	var sending_player = int(json["item"]["player"])
 	var receiving_player = int(json["receiving"])
 	
+	var is_found: String = ""
+	if (json["found"]):
+		is_found = "(found)"
+	
 	var sending_player_data = Archipelago.conn.get_gamedata_for_player(sending_player)
 	var receiving_player_data = Archipelago.conn.get_gamedata_for_player(receiving_player)
 	
@@ -54,9 +58,17 @@ func _parse_hint_message(json: Dictionary):
 	var receiving_color = _is_player_self_color(receiving_player)
 	var sending_color = _is_player_self_color(sending_player)
 	var location_color = "009300"
+	var entrance_color = "4b7f4c"
+	#Color("4b7f4cff")
+	
+	var entrance_message: String = ""
+	for elem in json["data"]:
+		if elem.has("type"):
+			if elem["type"] == "entrance_name":
+				entrance_message = "at [color=%s]%s[/color]" % [entrance_color, elem["text"]]
 	
 	
-	message = "[Hint]: [color=%s]%s[/color]'s [color=%s]%s[/color] is in [color=%s]%s[/color] of [color=%s]%s[/color]\n" % [receiving_color, _escape_bbcode(receiving_name), item_color, _escape_bbcode(item_name), location_color, _escape_bbcode(location_name), sending_color, _escape_bbcode(sending_name)]
+	message = "[Hint]: [color=%s]%s[/color]'s [color=%s]%s[/color] is in [color=%s]%s[/color] of [color=%s]%s[/color] %s %s.\n" % [receiving_color, _escape_bbcode(receiving_name), item_color, _escape_bbcode(item_name), location_color, _escape_bbcode(location_name), sending_color, _escape_bbcode(sending_name), entrance_message, is_found]
 	
 	return message
 
@@ -97,7 +109,7 @@ func _is_player_self_color(player_slot: int) -> String:
 	
 func _get_item_progtype_color(flag: int) -> String:
 	if flag == 1 or flag == 3 or flag == 5 or flag == 7:
-		return "5f168d"
+		return "9735d9"
 	elif flag == 2 or flag == 6:
 		return "6eb3e4"
 	elif flag == 4:

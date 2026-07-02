@@ -170,6 +170,14 @@ func _on_cancel_free_mark_or_trap(was_a_free: bool):
 func _on_number_was_marked(n: int, special: int):
 	if special == 3: # Free Mark Done
 		_on_cancel_free_mark_or_trap(true)
+	_on_possible_marksanity(n)
+
+func _on_possible_marksanity(n: int):
+	if Archipelago.location_exists(80000 + n):
+		if not Archipelago.location_checked(80000 + n):
+			Archipelago.collect_location(80000 + n)
+	pass
+
 
 func _on_using_free_mark():
 	var mark_node = self.find_child("MarkContainer", true)
