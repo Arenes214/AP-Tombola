@@ -11,6 +11,7 @@ var all_save_slots = {}
 var current_scene: Node
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$"../VersionLabel".text = "Client %s" % Archipelago.AP_CLIENT_VERSION
 	Archipelago.connected.connect(_on_connected)
 	Archipelago.connectionrefused.connect(_on_connection_refused)
 	Archipelago.disconnected.connect(_on_disconnected)
