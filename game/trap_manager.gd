@@ -112,9 +112,9 @@ func _continue_trap(proc):
 		return
 	var time: int
 	if trap in [301,310,311,312]:
-		time = 60
+		time = 3#60
 	elif trap in [302,320,321,322]:
-		time = 30
+		time = 2#30
 	
 	middle_of_trap_exec = true
 	stop_automark_timer()
@@ -133,7 +133,7 @@ func end_trap():
 	print("size %s" % to_execute_queue.size())
 	if to_execute_queue.size() > 0:
 		execute_trap()
-	else:
+	elif GameOptions.automark:
 		reset_automark_timer()
 
 func _set_shield_used(value):
@@ -155,6 +155,9 @@ func stop_automark_timer():
 	
 func reset_automark_timer():
 	print("automark reset")
+	if not GameOptions.automark:
+		print("Whoops called without automark active")
+		return
 	if not middle_of_trap_exec:
 		automark_timer.start(3)
 		middle_of_automark_timer = true

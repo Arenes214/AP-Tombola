@@ -87,6 +87,11 @@ func do_automark():
 	for i in range(1,7):
 		var card_node = card_id_to_node(i)
 		card_node.automark_numbers()
+	var milestone_node = self.find_child("MilestoneContainer")
+	var list = milestone_node.find_child("VMile")
+	for node in list.get_children():
+		node.attempt_automark()
+	
 
 func start_automark_timer():
 	var trap_node = self.find_child("TrapContainer", true)
@@ -111,7 +116,6 @@ func _on_item_received(item: NetworkItem):
 			n_obtained_update.emit(n, n_obtained)
 		
 		if GameOptions.automark:
-			print("get her at least")
 			start_automark_timer()
 
 		for card_id in range (1,7):

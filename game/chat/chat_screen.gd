@@ -103,6 +103,18 @@ func _parse_itemsend_message(json: Dictionary):
 		message = "[color=%s]%s[/color] has found their [color=%s]%s[/color] ([color=%s]%s[/color])\n" % [sending_color, _escape_bbcode(sending_name), item_color, _escape_bbcode(item_name), location_color, _escape_bbcode(location_name)]
 	else:
 		message = "[color=%s]%s[/color] has found [color=%s]%s[/color]'s [color=%s]%s[/color] ([color=%s]%s[/color])\n" % [sending_color, _escape_bbcode(sending_name), receiving_color, _escape_bbcode(receiving_name), item_color, _escape_bbcode(item_name), location_color, _escape_bbcode(location_name)]
+	# Check Hinted
+	for hint in Archipelago.conn.hints:
+		var item = hint.item
+		if item.src_player_id == sending_player and \
+		item.dest_player_id == receiving_player and \
+		sending_player == Archipelago.conn.get_player().slot and \
+		location_id == item.loc_id:
+			var hint_color = "d72f7cff"
+			var hint_message = "[color=%s]Notice: The item above was hinted![/color]" % hint_color
+			
+			message = message + "%s\n" % hint_message
+
 	return message
 
 func _escape_bbcode(msg: String) -> String:

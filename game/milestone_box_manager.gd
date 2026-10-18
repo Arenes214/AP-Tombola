@@ -11,6 +11,7 @@ var label_max = 0
 var what_score = 0
 var location_id = 0
 var is_achieved = false
+var is_clickable = false
 
 var type1_score_type = 0
 var type1_already_received = []
@@ -115,6 +116,7 @@ func set_status(status: int):
 				$Background.add_theme_stylebox_override("panel", stylebox_orange)
 				$V/Bar.theme = bar_green
 				$Button.visible = true
+				is_clickable = true
 				
 		2: # Sent
 			$Background.add_theme_stylebox_override("panel", stylebox_green)
@@ -142,20 +144,17 @@ func _on_obtained_update(n: int, _n_list: Array):
 		if ($V/Bar.value >= $V/Bar.max_value):
 			set_status(1)
 
-
 func _on_sum_update(sum: int):
 	$V/Bar.value = sum
 	$V/Bar/Label.text = "%s / %s" % [int($V/Bar.value), int($V/Bar.max_value)]
 	if ($V/Bar.value >= $V/Bar.max_value):
 			set_status(1)
 
-
 func _on_odd_update(count: int):
 	$V/Bar.value = count
 	$V/Bar/Label.text = "%s / %s" % [int($V/Bar.value), int($V/Bar.max_value)]
 	if ($V/Bar.value >= $V/Bar.max_value):
 			set_status(1)
-
 
 func _on_even_update(count: int):
 	$V/Bar.value = count
@@ -169,3 +168,7 @@ func _restore_previous_status(prop) -> void:
 
 func _on_button_pressed() -> void:
 	set_status(2)
+
+func attempt_automark() -> void:
+	if is_clickable:
+		_on_button_pressed()
