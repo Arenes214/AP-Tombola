@@ -112,9 +112,9 @@ func _continue_trap(proc):
 		return
 	var time: int
 	if trap in [301,310,311,312]:
-		time = 3#60
+		time = 60
 	elif trap in [302,320,321,322]:
-		time = 2#30
+		time = 30
 	
 	middle_of_trap_exec = true
 	stop_automark_timer()
