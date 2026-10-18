@@ -5,9 +5,12 @@ var obtained = 0
 
 var already_cached = false
 
+var hinted_items = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Archipelago.conn.set_notify("Tombola P%s Free LH Used" % Archipelago.conn.player_id, set_used)
+	Archipelago.conn.set_hint_notify(_update_hinted_items)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -48,7 +51,7 @@ var middle_of_request = false
 func _on_button_pressed() -> void:
 	$Button.visible = false
 	$Button.disabled = true
-	$Label.text = "Finding Location with Prog Item"
+	$Label.text = "Finding Location with Prog Item..."
 	
 	if not middle_of_request:
 		all_ids = Archipelago.location_list()
@@ -60,7 +63,7 @@ func _on_button_pressed() -> void:
 		middle_of_request = true
 	
 	if all_ids.size() == 0:
-		$Label.text = "No Progression Items Remain..."
+		$Label.text = "No Unhinted Progression Items Remain..."
 		return
 
 	var id = all_ids.pop_front()
@@ -70,7 +73,18 @@ func _on_button_pressed() -> void:
 
 func _post_scout(value):
 	if value.is_prog() and not Archipelago.location_checked(value.loc_id):
-		Archipelago.conn.scout(value.loc_id, 1, _after_hint)
+		var already_hinted = false
+		print("potential hint is %s" % value)
+		# Check if already hinted
+		for already in hinted_items:
+			if already._to_string() == value._to_string():
+				print("already hinted")
+				already_hinted = true
+				break
+		if not already_hinted:
+			Archipelago.conn.scout(value.loc_id, 1, _after_hint)
+		else:
+			_on_button_pressed()
 	else:
 		_on_button_pressed()
 
@@ -84,3 +98,10 @@ func set_used(n):
 	else:
 		used = int(n)
 	reset_usable()
+
+func _update_hinted_items(input: Array[NetworkHint]):
+	print("Hint Update")
+	hinted_items.clear()
+	for hint in input:
+		hinted_items.append(hint.item)
+	pass

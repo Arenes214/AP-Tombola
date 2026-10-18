@@ -19,6 +19,10 @@ func _ready() -> void:
 	Archipelago.connectionrefused.connect(_on_connection_refused)
 	Archipelago.disconnected.connect(_on_disconnected)
 	restore_saves()
+	
+	# Modify Save Stuff
+	$"../LoginBox/NameField".text_changed.connect(check_if_modify_slot)
+	$"../LoginBox/SaveField".text_changed.connect(check_if_modify_slot)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -53,24 +57,38 @@ func restore_saves():
 		save_node.load_info(node_data)
 		save_node.login_from_save.connect(_connect_from_save)
 		save_node.delete_save_request.connect(_delete_save)
+		save_node.edit_save_request.connect(_populate_for_edit)
 		%SaveBox.add_child(save_node)
-
 
 func _on_connect_button_pressed() -> void: # Connect without saving
 	connect_to_ap()
 
 func _on_save_connect_button_pressed() -> void: # Save and then Connect
-	
-	var save_info = {
-		"save_name" = %LoginBox/SaveField.text,
-		"slot_name" = %LoginBox/NameField.text,
-		"ip" = %LoginBox/IPField.text,
-		"port" = %LoginBox/PortField.text,
-		"password" = %LoginBox/PasswordField.text,
-		"ip_hidden" = %LoginBox/IpHideButton.button_pressed
-	}
-	all_save_slots[all_save_slots.size()] = save_info
-	_write_saves()
+	# Check Modify
+	var modify = check_if_modify_slot("lmao")
+	if modify:
+		print("modifying")
+		var slot = all_save_slots[modify]
+		slot.save_name = %LoginBox/SaveField.text
+		slot.slot_name = %LoginBox/NameField.text
+		slot.ip = %LoginBox/IPField.text
+		slot.port = %LoginBox/PortField.text
+		slot.password = %LoginBox/PasswordField.text
+		slot.ip_hidden = %LoginBox/IpHideButton.button_pressed
+		
+		_write_saves()		
+	else:
+		print("nah modif")
+		var save_info = {
+			"save_name" = %LoginBox/SaveField.text,
+			"slot_name" = %LoginBox/NameField.text,
+			"ip" = %LoginBox/IPField.text,
+			"port" = %LoginBox/PortField.text,
+			"password" = %LoginBox/PasswordField.text,
+			"ip_hidden" = %LoginBox/IpHideButton.button_pressed
+		}
+		all_save_slots[all_save_slots.size()] = save_info
+		_write_saves()
 	
 	connect_to_ap()
 
@@ -112,7 +130,6 @@ func connect_to_ap():
 	$"../LoginBox/ConnLabel".clear()
 	$"../LoginBox/ConnLabel".add_text("Connecting...")
 	
-	
 var refused = false
 func _on_connection_refused(conn, json):
 	$"../LoginBox/ConnLabel".clear()
@@ -147,6 +164,7 @@ func _on_disconnected():
 	conn_try = false
 
 func _connect_from_save(slot_name: String, ip: String, port: String, password: String):
+	
 	conn_try = true
 	Archipelago.ap_connect(ip, port, slot_name, password)
 	$"../LoginBox/ConnLabel".clear()
@@ -171,3 +189,28 @@ func _write_saves():
 		save_file.store_line(json_string)
 	save_file.close()
 	restore_saves()
+
+func check_if_modify_slot(_string):
+	print("call")
+	var found = false
+	for key in all_save_slots:
+		var slot = all_save_slots[key]
+		if slot.save_name == $"../LoginBox/SaveField".text and \
+		slot.slot_name == $"../LoginBox/NameField".text:
+			print("save edit detect")
+			found = key
+			break
+	if found:
+		$"../LoginBox/SaveConnectButton".text = "Edit \"%s\" and Connect" % $"../LoginBox/SaveField".text
+		return found
+	else:
+		$"../LoginBox/SaveConnectButton".text = "Save Slot Info and Connect"
+		return false
+
+func _populate_for_edit(save_name: String, slot_name: String, ip: String, port: String, password: String):
+	$"../LoginBox/NameField".text = slot_name
+	$"../LoginBox/IPField".text = ip
+	$"../LoginBox/PortField".text = port
+	$"../LoginBox/PasswordField".text = password
+	$"../LoginBox/SaveField".text = save_name
+	check_if_modify_slot("lmao2")

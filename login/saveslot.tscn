@@ -35,12 +35,14 @@ offset_bottom = 50.0
 
 [node name="VBox" type="VBoxContainer" parent="C" unique_id=1003175845]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(178, 150)
 layout_mode = 2
 
 [node name="SaveName" type="Label" parent="C/VBox" unique_id=2032799124]
 layout_mode = 2
 text = "Save Name"
 label_settings = SubResource("LabelSettings_ox4pm")
+horizontal_alignment = 1
 
 [node name="SlotName" type="Label" parent="C/VBox" unique_id=727030413]
 layout_mode = 2
@@ -52,6 +54,7 @@ text = "IP"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="C/VBox" unique_id=2030353342]
 layout_mode = 2
+size_flags_horizontal = 4
 
 [node name="LoadButton" type="Button" parent="C/VBox/HBoxContainer" unique_id=1442048745]
 layout_mode = 2
@@ -61,5 +64,11 @@ text = "Connect"
 layout_mode = 2
 text = "Delete"
 
+[node name="EditButton" type="Button" parent="C/VBox" unique_id=269707893]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Edit Save Info"
+
 [connection signal="pressed" from="C/VBox/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]
 [connection signal="pressed" from="C/VBox/HBoxContainer/DeleteButton" to="." method="_on_delete_button_pressed"]
+[connection signal="pressed" from="C/VBox/EditButton" to="." method="_on_edit_button_pressed"]
