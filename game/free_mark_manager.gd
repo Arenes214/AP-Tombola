@@ -50,6 +50,7 @@ func mark_usable(n: int):
 func _on_button_pressed() -> void:
 	if state == 0:
 		Archipelago.conn.retrieve("Tombola P%s Free Mark Lock" % Archipelago.conn.player_id, _on_lock_retrieved)
+		$Label.text = "Please Wait..."
 	else:
 		_free_lock()
 		$LockTimer.stop()
