@@ -1,9 +1,13 @@
 extends RichTextLabel
 
+var links = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Archipelago.printjson.connect(_on_message_received)
+	for slot in Archipelago.conn.slots:
+		if Archipelago.conn.player_id in slot.group_members:
+			links.append(slot.name)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -45,7 +49,9 @@ func _parse_hint_message(json: Dictionary):
 	
 	var is_found: String = ""
 	if (json["found"]):
-		is_found = "(found)"
+		is_found = ". (found)"
+	else:
+		is_found="."
 	
 	var sending_player_data = Archipelago.conn.get_gamedata_for_player(sending_player)
 	var receiving_player_data = Archipelago.conn.get_gamedata_for_player(receiving_player)
@@ -65,10 +71,10 @@ func _parse_hint_message(json: Dictionary):
 	for elem in json["data"]:
 		if elem.has("type"):
 			if elem["type"] == "entrance_name":
-				entrance_message = "at [color=%s]%s[/color]" % [entrance_color, elem["text"]]
+				entrance_message = " at [color=%s]%s[/color]" % [entrance_color, elem["text"]]
 	
 	
-	message = "[Hint]: [color=%s]%s[/color]'s [color=%s]%s[/color] is in [color=%s]%s[/color] of [color=%s]%s[/color] %s %s.\n" % [receiving_color, _escape_bbcode(receiving_name), item_color, _escape_bbcode(item_name), location_color, _escape_bbcode(location_name), sending_color, _escape_bbcode(sending_name), entrance_message, is_found]
+	message = "[Hint]: [color=%s]%s[/color]'s [color=%s]%s[/color] is in [color=%s]%s[/color] of [color=%s]%s[/color]%s%s\n" % [receiving_color, _escape_bbcode(receiving_name), item_color, _escape_bbcode(item_name), location_color, _escape_bbcode(location_name), sending_color, _escape_bbcode(sending_name), entrance_message, is_found]
 	
 	return message
 
@@ -103,7 +109,8 @@ func _escape_bbcode(msg: String) -> String:
 	return msg.replace("[","[lb]")
 	
 func _is_player_self_color(player_slot: int) -> String:
-	if player_slot == Archipelago.conn.player_id:
+	print("test name is %s" % Archipelago.conn.get_slot(player_slot).name)
+	if player_slot == Archipelago.conn.player_id or Archipelago.conn.get_slot(player_slot).name in links:
 		return "ef960c"
 	return "f5f5dc"
 	

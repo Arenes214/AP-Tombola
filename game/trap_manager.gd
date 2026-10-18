@@ -31,9 +31,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# TODO REMOVE TEST 
 	if middle_of_trap_exec:
-		if current_trap == 301:
+		if current_trap in [301,310,311,312]:
 			$Label.text = "Blindness Trap: %s sec" % (snappedf(timer.time_left, 0.1))
-		elif current_trap == 302:
+		elif current_trap in [302,320,321,322]:
 			$Label.text = "Lock Trap: %s sec" % (snappedf(timer.time_left, 0.1))
 	elif shield_received and shield_used:
 		if shield_received <= shield_used:
@@ -43,10 +43,15 @@ func _process(delta: float) -> void:
 		else:
 			$Label.text = "%s Shields - Next Traps Prevented" % (shield_received - shield_used)
 	else:
-		$Label.text = "No Shields - Vulnerable to Next Trap"
+		if shield_received == 0:
+			$Label.text = "No Shields - Vulnerable to Next Trapasd"
+		elif shield_received == 1:
+			$Label.text = "1 Shield - Next Trap Prevented"
+		else:
+			$Label.text = "%s Shields - Next Traps Prevented" % shield_received
 
 func possible_item(item: NetworkItem):
-	if item.id == 203:
+	if item.id in [203,230,231,232]:
 		shield_received += 1
 		Archipelago.conn.retrieve("Tombola P%s Shield Used" % Archipelago.conn.player_id, _after_shield_retrieve)
 	else:
@@ -94,11 +99,10 @@ func _continue_trap(proc):
 			execute_trap()
 		return
 	var time: int
-	match trap:
-		301:
-			time = 60
-		302:
-			time = 30
+	if trap in [301,310,311,312]:
+		time = 60
+	elif trap in [302,320,321,322]:
+		time = 30
 	
 	middle_of_trap_exec = true
 	start_trap.emit(trap)

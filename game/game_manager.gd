@@ -35,6 +35,9 @@ func _ready() -> void:
 		var old_y = $HSplitContainer/TabContainer/MilestoneContainer/Scroll.get_v_scroll_bar().size[1]
 		$HSplitContainer/TabContainer/MilestoneContainer/Scroll.get_v_scroll_bar().custom_minimum_size = Vector2(20,old_y)
 	
+	# this can be useful for debug xD
+	#print(Archipelago.conn.slot_data)
+	
 	# Populate cards with their numbers and connect to signals
 	for i in range (1,7):
 		var card_node = card_id_to_node(i)
@@ -81,7 +84,7 @@ func _ready() -> void:
 	trap_node.start_trap.connect(_on_starting_trap)
 	trap_node.finish_trap.connect(_on_ending_trap)
 
-
+	
 	pass
 
 func _on_item_received(item: NetworkItem):
@@ -133,13 +136,13 @@ func _on_item_received(item: NetworkItem):
 					return
 				_stall_timer()
 	
-	elif item.id == 201: # Free Mark
+	elif item.id == 201 or item.id in [210,211,212]: # Free Mark
 		var mark_node = self.find_child("MarkContainer", true)
 		mark_node.possible_item()
-	elif item.id == 202: # Free Location Hint
+	elif item.id == 202 or item.id in [220,221,222]: # Free Location Hint
 		var lhint_node = self.find_child("LHintContainer", true)
 		lhint_node.possible_item()
-	elif [203,301,302].has(item.id): # Trap Shield or Traps
+	elif [203,301,302,230,231,232,310,311,312,320,321,322].has(item.id): # Trap Shield or Traps
 		var trap_node = self.find_child("TrapContainer", true)
 		trap_node.possible_item(item)
 
@@ -202,11 +205,11 @@ func _on_starting_trap(id: int):
 	var mark_node = self.find_child("MarkContainer", true)
 	if mark_node.state == 1:
 		mark_node._on_button_pressed()
-	if id == 301:
+	if id in [301,310,311,312]:
 		for i in range(1,7):
 			var card_node = card_id_to_node(i)
 			card_node.set_all_numbers_status(false, 11) # Status 11 is Blindness Trap
-	elif id == 302:
+	elif id in [302,320,321,322]:
 		for i in range(1,7):
 			var card_node = card_id_to_node(i)
 			card_node.set_all_numbers_status(true, 12) # Status 12 is Lock Trap

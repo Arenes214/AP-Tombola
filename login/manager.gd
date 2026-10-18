@@ -1,6 +1,6 @@
 extends Node
 
-var client_ver = 3
+var client_ver = 4
 var game_scene = preload("res://game/game.tscn")
 
 var conn_try = false
