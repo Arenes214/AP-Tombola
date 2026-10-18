@@ -116,8 +116,6 @@ func set_status(status: int):
 				$V/Bar.theme = bar_green
 				$Button.visible = true
 				
-				if GameOptions.actual_automark: # TODO proper fix
-					_on_button_pressed()
 		2: # Sent
 			$Background.add_theme_stylebox_override("panel", stylebox_green)
 			$Button.visible = false

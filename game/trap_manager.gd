@@ -2,6 +2,7 @@ extends PanelContainer
 
 signal start_trap(id: int)
 signal finish_trap()
+signal automark_timer_done()
 
 var incoming_queue: Array
 var to_execute_queue: Array
@@ -17,6 +18,9 @@ var middle_of_trap_try = false
 var middle_of_trap_exec = false
 var current_trap: int
 
+var automark_timer: Timer
+var middle_of_automark_timer = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,6 +28,11 @@ func _ready() -> void:
 	timer.one_shot = true
 	timer.timeout.connect(end_trap)
 	self.add_child(timer)
+	
+	automark_timer = Timer.new()
+	automark_timer.one_shot = true
+	automark_timer.timeout.connect(_emit_automark)
+	self.add_child(automark_timer)
 	
 	Archipelago.conn.set_notify("Tombola P%s Shield Used" % Archipelago.conn.player_id, _set_shield_used)
 
@@ -35,6 +44,9 @@ func _process(delta: float) -> void:
 			$Label.text = "Blindness Trap: %s sec" % (snappedf(timer.time_left, 0.1))
 		elif current_trap in [302,320,321,322]:
 			$Label.text = "Lock Trap: %s sec" % (snappedf(timer.time_left, 0.1))
+	elif middle_of_automark_timer:
+		$Label.text = "Automark in %s sec" % (snappedf(automark_timer.time_left, 0.1))
+	
 	elif shield_received and shield_used:
 		if shield_received <= shield_used:
 			$Label.text = "No Shields - Vulnerable to Next Trap"
@@ -44,7 +56,7 @@ func _process(delta: float) -> void:
 			$Label.text = "%s Shields - Next Traps Prevented" % (shield_received - shield_used)
 	else:
 		if shield_received == 0:
-			$Label.text = "No Shields - Vulnerable to Next Trapasd"
+			$Label.text = "No Shields - Vulnerable to Next Trap"
 		elif shield_received == 1:
 			$Label.text = "1 Shield - Next Trap Prevented"
 		else:
@@ -105,6 +117,7 @@ func _continue_trap(proc):
 		time = 30
 	
 	middle_of_trap_exec = true
+	stop_automark_timer()
 	start_trap.emit(trap)
 	timer.start(time)
 	current_trap = trap
@@ -120,6 +133,8 @@ func end_trap():
 	print("size %s" % to_execute_queue.size())
 	if to_execute_queue.size() > 0:
 		execute_trap()
+	else:
+		reset_automark_timer()
 
 func _set_shield_used(value):
 	if not value:
@@ -127,3 +142,20 @@ func _set_shield_used(value):
 	shield_used = int(value)
 	if shield_used > sh_used_local_count:
 		sh_used_local_count = shield_used
+
+func _emit_automark():
+	print("emit")
+	automark_timer_done.emit()
+	stop_automark_timer()
+
+func stop_automark_timer():
+	print("automark stop")
+	automark_timer.stop()
+	middle_of_automark_timer = false
+	
+func reset_automark_timer():
+	print("automark reset")
+	if not middle_of_trap_exec:
+		automark_timer.start(3)
+		middle_of_automark_timer = true
+	

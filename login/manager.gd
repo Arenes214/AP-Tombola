@@ -95,7 +95,7 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
  # TODO slot validation
 
 func _on_connected(conn: ConnectionInfo, json: Dictionary):
-	print(Archipelago.conn.slot_data)
+	#print(Archipelago.conn.slot_data)
 	if not Archipelago.conn.slot_data.has("Genver"):
 		#Archipelago.ap_disconnect()
 		#$"../LoginBox/ConnLabel".clear()
@@ -111,7 +111,7 @@ func _on_connected(conn: ConnectionInfo, json: Dictionary):
 			version_mismatch = true
 			return
 	
-	GameOptions.actual_automark = %LoginBox/AutoClickButton.button_pressed
+	GameOptions.automark = %LoginBox/AutoClickButton.button_pressed
 	$"../LoginBox/ConnLabel".clear()
 	$"../LoginBox/ConnLabel".add_text("Connected!")
 	

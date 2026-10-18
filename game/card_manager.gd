@@ -60,8 +60,10 @@ func restore_status(was_a_free: bool):
 		for node in hbox.get_children():
 			node.restore_mark(was_a_free)
 
-
 func automark_numbers():
+	if is_locked:
+		return
+	
 	for hbox in $VBoxContainer.get_children():
 		for node in hbox.get_children():
 			if not node.n == 0 and node.is_markable:
@@ -113,8 +115,6 @@ func _on_unlock_button_pressed() -> void:
 	$LockPanel.visible = false
 	$VBoxContainer.visible = true
 	is_locked = false
-	if not is_locked and GameOptions.automark:
-		automark_numbers()
 	possible_unlock_loc_send.emit(card_id)
 	Archipelago.send_command("Set",{"key": "Tombola P%s Unlock %s" % [Archipelago.conn.player_id, (card_id+1)], "default":0, "want_reply": true, "operations":[{"operation": "replace", "value": 1}]})
 	
