@@ -1,6 +1,7 @@
 extends Control
 
 signal milestone_achieved(loc_id: int)
+signal milestone_clickable()
 const score_type_strings = [0,0,"Ambo","Terno","Quaterna","Cinquina","Decina","Tombola"]
 
 var stylebox_orange = load("res://game/styles/milestone_box_background_orange.tres")
@@ -117,6 +118,7 @@ func set_status(status: int):
 				$V/Bar.theme = bar_green
 				$Button.visible = true
 				is_clickable = true
+				milestone_clickable.emit()
 				
 		2: # Sent
 			$Background.add_theme_stylebox_override("panel", stylebox_green)

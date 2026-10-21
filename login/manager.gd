@@ -6,6 +6,7 @@ var game_scene = preload("res://game/game.tscn")
 var conn_try = false
 var conn_yes = false
 var version_mismatch = false
+var current_save_name: String
 
 var all_save_slots = {}
 var current_scene: Node
@@ -61,6 +62,7 @@ func restore_saves():
 		%SaveBox.add_child(save_node)
 
 func _on_connect_button_pressed() -> void: # Connect without saving
+	current_save_name = ""
 	connect_to_ap()
 
 func _on_save_connect_button_pressed() -> void: # Save and then Connect
@@ -90,11 +92,14 @@ func _on_save_connect_button_pressed() -> void: # Save and then Connect
 		all_save_slots[all_save_slots.size()] = save_info
 		_write_saves()
 	
+	current_save_name = %LoginBox/SaveField.text
 	connect_to_ap()
 
  # TODO slot validation
 
 func _on_connected(conn: ConnectionInfo, json: Dictionary):
+	$"../LoginBox/ConnLabel".clear()
+	$"../LoginBox/ConnLabel".add_text("Connected!")
 	#print(Archipelago.conn.slot_data)
 	if not Archipelago.conn.slot_data.has("Genver"):
 		#Archipelago.ap_disconnect()
@@ -112,8 +117,6 @@ func _on_connected(conn: ConnectionInfo, json: Dictionary):
 			return
 	
 	GameOptions.automark = %LoginBox/AutoClickButton.button_pressed
-	$"../LoginBox/ConnLabel".clear()
-	$"../LoginBox/ConnLabel".add_text("Connected!")
 	
 	var scene = game_scene.instantiate()
 	get_tree().root.add_child(scene)
@@ -122,13 +125,17 @@ func _on_connected(conn: ConnectionInfo, json: Dictionary):
 	$"../ScrollContainer".hide()
 	conn_try = false
 	conn_yes = true
+	var slot = Archipelago.conn.get_player()
+	# TODO save name
+	DisplayServer.window_set_title("%s @ %s - AP Tombola" % [slot.get_name(), current_save_name])
 
 func connect_to_ap():
+	$"../LoginBox/ConnLabel".clear()
+	$"../LoginBox/ConnLabel".add_text("Connecting...")
 	conn_try = true
 	conn_yes = false
 	Archipelago.ap_connect(%LoginBox/IPField.text, %LoginBox/PortField.text, %LoginBox/NameField.text, %LoginBox/PasswordField.text)
-	$"../LoginBox/ConnLabel".clear()
-	$"../LoginBox/ConnLabel".add_text("Connecting...")
+
 	
 var refused = false
 func _on_connection_refused(conn, json):
@@ -139,6 +146,7 @@ func _on_connection_refused(conn, json):
 
 var retry = true
 func _on_disconnected():
+	DisplayServer.window_set_title("AP Tombola")
 	GameOptions.enable_genver1_fixes = false
 	if GameOptions.intentional_disconnect:
 		$"../LoginBox/ConnLabel".clear()
@@ -163,12 +171,13 @@ func _on_disconnected():
 		$"../ScrollContainer".show()
 	conn_try = false
 
-func _connect_from_save(slot_name: String, ip: String, port: String, password: String):
-	
+func _connect_from_save(slot_name: String, ip: String, port: String, password: String, save_name: String):
+	current_save_name = save_name
 	conn_try = true
-	Archipelago.ap_connect(ip, port, slot_name, password)
 	$"../LoginBox/ConnLabel".clear()
 	$"../LoginBox/ConnLabel".add_text("Connecting...")
+	Archipelago.ap_connect(ip, port, slot_name, password)
+	
 
 func _delete_save(save_name: String):
 	var marked_delete: Array

@@ -1,5 +1,5 @@
 extends Control
-signal login_from_save(slot_name: String, ip: String, port: String, password: String)
+signal login_from_save(slot_name: String, ip: String, port: String, password: String, save_name: String)
 signal delete_save_request(save_name: String)
 signal edit_save_request(save_name: String, slot_name: String, ip: String, port: String, password: String)
 
@@ -34,7 +34,7 @@ func load_info(info: Dictionary):
 		%VBox/Address.text = "IP Hidden"
 
 func _on_load_button_pressed() -> void:
-	login_from_save.emit(slot_name, ip, port, password)
+	login_from_save.emit(slot_name, ip, port, password, save_name)
 
 func _on_delete_button_pressed() -> void:
 	delete_save_request.emit(save_name)

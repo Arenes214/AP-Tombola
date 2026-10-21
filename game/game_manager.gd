@@ -65,6 +65,7 @@ func _ready() -> void:
 			child.populate_milestone(milestone[0],milestone[1], self)
 			vmile_node.add_child(child)
 			child.milestone_achieved.connect(_on_possible_milestone_location)
+			child.milestone_clickable.connect(start_automark_timer)
 	
 	# Populate Goals
 	var goal_node = self.find_child("GoalContainer", true)
@@ -82,11 +83,18 @@ func _ready() -> void:
 	trap_node.start_trap.connect(_on_starting_trap)
 	trap_node.finish_trap.connect(_on_ending_trap)
 	trap_node.automark_timer_done.connect(do_automark)
+	
+	# Connect to Options
+	var options_node = self.find_child("OptionsContainer", true)
+	options_node.automark_enabled.connect(start_automark_timer)
 
 func do_automark():
 	for i in range(1,7):
 		var card_node = card_id_to_node(i)
+		if card_node.is_unlockable:
+			card_node._on_unlock_button_pressed()
 		card_node.automark_numbers()
+	
 	var milestone_node = self.find_child("MilestoneContainer")
 	var list = milestone_node.find_child("VMile")
 	for node in list.get_children():
@@ -94,6 +102,8 @@ func do_automark():
 	
 
 func start_automark_timer():
+	if not GameOptions.automark:
+		return
 	var trap_node = self.find_child("TrapContainer", true)
 	trap_node.reset_automark_timer()
 
@@ -134,6 +144,8 @@ func _on_item_received(item: NetworkItem):
 		var card_node = card_id_to_node(card_id)
 		if card_node.is_locked:
 			card_node.allow_unlock()
+		if GameOptions.automark:
+			start_automark_timer()
 	
 	elif item.id == 201 or item.id in [210,211,212]: # Free Mark
 		var mark_node = self.find_child("MarkContainer", true)

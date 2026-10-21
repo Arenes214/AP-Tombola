@@ -112,6 +112,9 @@ func on_number_pressed(n: int, row_id: int, special:int):
 	number_was_marked.emit(n, special)
 
 func _on_unlock_button_pressed() -> void:
+	if not is_unlockable:
+		print("card tried to unlock when it cannot")
+		return
 	$LockPanel.visible = false
 	$VBoxContainer.visible = true
 	is_locked = false
