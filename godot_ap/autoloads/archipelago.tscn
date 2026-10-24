@@ -12,13 +12,13 @@ script = ExtResource("2_2e7gq")
 minor = 5
 build = 1
 
-[node name="AP" type="Node" unique_id=2138943298]
+[node name="AP" type="Node" unique_id=569186242]
 script = ExtResource("1_41ph8")
 AP_GAME_NAME = "AP Tombola"
 AP_CLIENT_VERSION = SubResource("Resource_pmgvy")
 AP_VERSION = SubResource("Resource_m1v20")
 
-[node name="HangTimer" type="Timer" parent="." unique_id=1715082760]
+[node name="HangTimer" type="Timer" parent="." unique_id=1833819883]
 wait_time = 5.0
 one_shot = true
 
