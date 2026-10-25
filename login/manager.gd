@@ -136,7 +136,6 @@ func connect_to_ap():
 	conn_yes = false
 	Archipelago.ap_connect(%LoginBox/IPField.text, %LoginBox/PortField.text, %LoginBox/NameField.text, %LoginBox/PasswordField.text)
 
-	
 var refused = false
 func _on_connection_refused(conn, json):
 	$"../LoginBox/ConnLabel".clear()
@@ -148,6 +147,7 @@ var retry = true
 func _on_disconnected():
 	DisplayServer.window_set_title("AP Tombola")
 	GameOptions.enable_genver1_fixes = false
+	$"../LoginBox/AutoClickButton".button_pressed = GameOptions.automark
 	if GameOptions.intentional_disconnect:
 		$"../LoginBox/ConnLabel".clear()
 		GameOptions.intentional_disconnect = false
