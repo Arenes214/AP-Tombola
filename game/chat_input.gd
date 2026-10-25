@@ -12,9 +12,11 @@ func _process(delta: float) -> void:
 	
 
 func _on_text_submitted(new_text: String) -> void:
-	Archipelago.send_command("Say", {"text": new_text})
-	text = ""
+	if text:
+		Archipelago.send_command("Say", {"text": new_text})
+		text = ""
 
 
 func _on_chat_send_pressed() -> void:
-	_on_text_submitted(text)
+	if text:
+		_on_text_submitted(text)
