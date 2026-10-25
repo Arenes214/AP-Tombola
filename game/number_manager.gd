@@ -71,6 +71,8 @@ func mark(mark_type: int): #func name is kinda misleading fuck
 		
 	elif mark_type == 3:
 		if current_mark == 3:
+			$PanelContainer/Label/Button.visible = false
+			$PanelContainer.add_theme_stylebox_override("panel", stylebox_blue)
 			return
 		current_mark = 3
 		$PanelContainer/Label/Button.visible = false
